@@ -1,0 +1,47 @@
+﻿@using Glutena.Models.Entities
+@model IEnumerable<Product>
+<<div class="container-xxl py-5">
+    <div class="container">
+
+        <div class="text-center mx-auto mb-5" style="max-width: 500px;">
+            <h1 class="display-5">Ürünler</h1>
+            <p>Glutensiz ürün rehberi</p>
+        </div>
+
+        <div class="row g-4">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-3 col-md-6">
+                    <div class="product-item">
+                        <div class="position-relative bg-light overflow-hidden">
+
+                            <div class="text-center p-4">
+                                <h5 class="mb-3">@item.ProductName</h5>
+                                <span class="text-primary fw-bold">
+                                    @item.Price ₺
+                                </span>
+                            </div>
+
+                            <div class="d-flex border-top">
+                                <small class="w-50 text-center border-end py-2">
+                                    <a class="text-body" href="#">
+                                        Detay
+                                    </a>
+                                </small>
+                                <small class="w-50 text-center py-2">
+                                    <a class="text-body" href="#">
+                                        İncele
+                                    </a>
+                                </small>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+
+    </div>
+</div>
