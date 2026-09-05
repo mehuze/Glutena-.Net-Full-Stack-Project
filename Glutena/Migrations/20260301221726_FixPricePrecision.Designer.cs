@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Glutena.Migrations
 {
     [DbContext(typeof(GlutenaDbContext))]
-    [Migration("20260225210532_GlutenaCreate")]
-    partial class GlutenaCreate
+    [Migration("20260301221726_FixPricePrecision")]
+    partial class FixPricePrecision
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -249,10 +249,10 @@ namespace Glutena.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
+                    b.Property<string>("AffiliateUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("BrandId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -271,14 +271,14 @@ namespace Glutena.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("HighLighted")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Kdv")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsHighlighted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSponsored")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Keywords")
                         .HasColumnType("nvarchar(max)");
@@ -286,7 +286,8 @@ namespace Glutena.Migrations
                     b.Property<string>("PhotoPath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductName")
@@ -294,10 +295,12 @@ namespace Glutena.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<decimal>("Rating")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
-                    b.Property<int>("Related")
+                    b.Property<int>("SponsorPriority")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedDate")
@@ -310,11 +313,24 @@ namespace Glutena.Migrations
 
                     b.HasIndex("BrandId");
 
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Glutena.Models.Entities.ProductCategory", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("Glutena.Models.Entities.Testimonial", b =>
@@ -431,7 +447,7 @@ namespace Glutena.Migrations
             modelBuilder.Entity("Glutena.Models.Entities.Experience", b =>
                 {
                     b.HasOne("Glutena.Models.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("Experiences")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -455,19 +471,30 @@ namespace Glutena.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Glutena.Models.Entities.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Glutena.Models.Entities.User", null)
                         .WithMany("Products")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Brand");
+                });
+
+            modelBuilder.Entity("Glutena.Models.Entities.ProductCategory", b =>
+                {
+                    b.HasOne("Glutena.Models.Entities.Category", "Category")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Glutena.Models.Entities.Product", "Product")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Glutena.Models.Entities.Testimonial", b =>
@@ -486,7 +513,14 @@ namespace Glutena.Migrations
                 {
                     b.Navigation("Children");
 
-                    b.Navigation("Products");
+                    b.Navigation("ProductCategories");
+                });
+
+            modelBuilder.Entity("Glutena.Models.Entities.Product", b =>
+                {
+                    b.Navigation("Experiences");
+
+                    b.Navigation("ProductCategories");
                 });
 
             modelBuilder.Entity("Glutena.Models.Entities.User", b =>

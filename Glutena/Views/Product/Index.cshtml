@@ -1,47 +1,155 @@
 ﻿@using Glutena.Models.Entities
 @model IEnumerable<Product>
-<<div class="container-xxl py-5">
-    <div class="container">
 
-        <div class="text-center mx-auto mb-5" style="max-width: 500px;">
-            <h1 class="display-5">Ürünler</h1>
-            <p>Glutensiz ürün rehberi</p>
-        </div>
-
-        <div class="row g-4">
-
-            @foreach (var item in Model)
-            {
-                <div class="col-lg-3 col-md-6">
-                    <div class="product-item">
-                        <div class="position-relative bg-light overflow-hidden">
-
-                            <div class="text-center p-4">
-                                <h5 class="mb-3">@item.ProductName</h5>
-                                <span class="text-primary fw-bold">
-                                    @item.Price ₺
-                                </span>
-                            </div>
-
-                            <div class="d-flex border-top">
-                                <small class="w-50 text-center border-end py-2">
-                                    <a class="text-body" href="#">
-                                        Detay
-                                    </a>
-                                </small>
-                                <small class="w-50 text-center py-2">
-                                    <a class="text-body" href="#">
-                                        İncele
-                                    </a>
-                                </small>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            }
-
-        </div>
-
-    </div>
+<!-- Header -->
+<div style="background: linear-gradient(135deg, #1b4332, #40916c); padding: 60px 0; text-align:center;">
+    <h1 style="color:white; font-weight:700;">Ürünler</h1>
+    <p style="color:rgba(255,255,255,0.75);">
+        <a asp-controller="Home" asp-action="Index" style="color:rgba(255,255,255,0.75); text-decoration:none;">Anasayfa</a> / Ürünler
+    </p>
 </div>
+
+<div class="container py-5">
+
+    <!-- Filtreler -->
+    <div style="background:white; border-radius:14px; padding:24px; border:1px solid #eee; margin-bottom:32px;">
+        <div class="row g-3 align-items-end">
+
+            <!-- Arama -->
+            <div class="col-md-5">
+                <label style="font-weight:600; color:#444; margin-bottom:6px;">Ürün Ara</label>
+                <input type="text" id="searchInput" class="form-control"
+                       placeholder="Ürün adı yazın..."
+                       value="@ViewBag.Search" />
+            </div>
+
+            <!-- Marka -->
+            <div class="col-md-4">
+                <label style="font-weight:600; color:#444; margin-bottom:6px;">Marka</label>
+                <select id="brandFilter" class="form-control">
+                    <option value="">Tüm Markalar</option>
+                    @foreach (var brand in ViewBag.Brands)
+                    {
+                        <option value="@brand.Name">@brand.Name</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Sıralama -->
+            <div class="col-md-3">
+                <label style="font-weight:600; color:#444; margin-bottom:6px;">Sırala</label>
+                <select id="sortFilter" class="form-control">
+                    <option value="">Varsayılan</option>
+                    <option value="asc">Ucuzdan Pahalıya</option>
+                    <option value="desc">Pahalıdan Ucuza</option>
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Ürün Listesi -->
+    <div class="row g-4" id="productList">
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-3 col-md-6 product-card"
+                 data-name="@item.ProductName.ToLower()"
+                 data-brand="@item.Brand?.Name"
+                 data-price="@item.Price">
+
+                <div style="background:white; border-radius:14px; padding:24px; text-align:center; border:1px solid #eee; height:100%; transition:transform 0.2s;" class="product-item">
+
+                    @if (!string.IsNullOrEmpty(item.PhotoPath))
+                    {
+                        <img src="@item.PhotoPath" alt="@item.ProductName"
+                             style="height:160px; object-fit:contain; margin-bottom:14px; width:100%;">
+                    }
+                    else
+                    {
+                        <div style="height:160px; background:#f0f0f0; border-radius:8px; margin-bottom:14px; display:flex; align-items:center; justify-content:center; color:#aaa;">
+                            Görsel Yok
+                        </div>
+                    }
+
+                    <h5 style="font-size:15px; font-weight:600; color:#222; margin-bottom:6px;">@item.ProductName</h5>
+                    <p style="color:#888; font-size:13px; margin-bottom:8px;">@item.Brand?.Name</p>
+
+                    @if (item.Price != null)
+                    {
+                        <div style="color:#2d6a4f; font-weight:700; font-size:16px; margin-bottom:12px;">@item.Price ₺</div>
+                    }
+
+                    <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id"
+                       style="background:#e9f5ee; color:#2d6a4f; padding:7px 20px; border-radius:7px; font-size:13px; font-weight:600; text-decoration:none;">
+                        İncele
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Sonuç yok mesajı -->
+    <div id="noResult" style="display:none; text-align:center; padding:40px; color:#aaa;">
+        <p style="font-size:18px;">Ürün bulunamadı 😔</p>
+    </div>
+
+</div>
+
+<!-- JavaScript: Anlık Arama ve Filtreleme -->
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const brandFilter = document.getElementById('brandFilter');
+    const sortFilter = document.getElementById('sortFilter');
+    const productList = document.getElementById('productList');
+    const noResult = document.getElementById('noResult');
+
+    function filterProducts() {
+        const search = searchInput.value.toLowerCase();
+        const brand = brandFilter.value;
+        const sort = sortFilter.value;
+
+        // Tüm kartları al
+        let cards = Array.from(document.querySelectorAll('.product-card'));
+
+        // Filtrele
+        let visible = cards.filter(card => {
+            const name = card.dataset.name;
+            const cardBrand = card.dataset.brand;
+
+                const cardBrandLower = cardBrand ? cardBrand.toLowerCase() : '';
+    const matchSearch = name.includes(search) || cardBrandLower.includes(search);
+            const matchBrand = brand === '' || cardBrand === brand;
+
+            if (matchSearch && matchBrand) {
+                card.style.display = 'block';
+                return true;
+            } else {
+                card.style.display = 'none';
+                return false;
+            }
+        });
+
+        // Sırala
+        if (sort === 'asc') {
+            visible.sort((a, b) => parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
+        } else if (sort === 'desc') {
+            visible.sort((a, b) => parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
+        }
+
+        // Sıralanmış kartları listeye ekle
+        visible.forEach(card => productList.appendChild(card));
+
+        // Sonuç yok mesajı
+        noResult.style.display = visible.length === 0 ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', filterProducts);
+    brandFilter.addEventListener('change', filterProducts);
+    sortFilter.addEventListener('change', filterProducts);
+    // Sayfa açılınca otomatik filtrele
+       window.addEventListener('load', function() {
+        if (document.getElementById('searchInput').value.trim() !== '') {
+            filterProducts();
+        }
+    });
+</script>

@@ -1,13 +1,15 @@
 ﻿using Glutena.Models.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace Glutena.Data
 {
-    public class GlutenaDbContext : DbContext
-    {//EF Core’un kalbidir.Veritabanı ile uygulama arasındaki köprüdür.
+    public class GlutenaDbContext : IdentityDbContext<IdentityUser>
+    {
         public GlutenaDbContext(DbContextOptions<GlutenaDbContext> options)
-            : base(options)//Program.cs’te verdiğimiz connection string buraya gelir.
+            : base(options)
         {
         }
 
@@ -21,9 +23,15 @@ namespace Glutena.Data
         public DbSet<Testimonial> Testimonials { get; set; }
         public DbSet<Experience> Experiences { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<BlacklistWord> BlacklistWords { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Price)
+                .HasPrecision(18, 2);
 
             modelBuilder.Entity<ProductCategory>()
                 .HasKey(pc => new { pc.ProductId, pc.CategoryId });
@@ -39,9 +47,7 @@ namespace Glutena.Data
                 .WithMany(c => c.ProductCategories)
                 .HasForeignKey(pc => pc.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
-
         }
-
     }
 
     public class GlutenaDbContextFactory
@@ -50,14 +56,9 @@ namespace Glutena.Data
         public GlutenaDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<GlutenaDbContext>();
-
             optionsBuilder.UseSqlServer(
-                "Server=.;Database=GlutenaDb;Trusted_Connection=True;TrustServerCertificate=True;");
-
+                "Server=MK;Database=GlutenaDb;Trusted_Connection=True;TrustServerCertificate=True;");
             return new GlutenaDbContext(optionsBuilder.Options);
         }
-
     }
-
 }
-

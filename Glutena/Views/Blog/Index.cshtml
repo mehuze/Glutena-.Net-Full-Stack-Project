@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Glutena.Models.Entities.Blog>
+@{
+    ViewData["Title"] = "Blog";
+}
+
+<!-- Page Header -->
+<div style="background: linear-gradient(135deg, #1b4332, #40916c); padding: 60px 0; text-align:center;">
+    <h1 style="color:white; font-weight:700; font-size:42px;">Blog</h1>
+    <p style="color:rgba(255,255,255,0.75);">
+        <a asp-controller="Home" asp-action="Index" style="color:rgba(255,255,255,0.75); text-decoration:none;">Anasayfa</a>
+        / Blog
+    </p>
+</div>
+
+<!-- Blog Listesi -->
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 style="font-weight:700; color:#1b4332;">Son Blog Yazıları</h2>
+        <p style="color:#888;">Glutensiz yaşam, ürün incelemeleri ve kullanıcı deneyimleri hakkında içerikler.</p>
+    </div>
+    
+    <div class="row g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div style="background:white; border-radius:14px; overflow:hidden; border:1px solid #eee; height:100%; transition:transform 0.2s;"
+                     onmouseover="this.style.transform='translateY(-5px)'"
+                     onmouseout="this.style.transform='translateY(0)'">
+
+                    <img src="@(string.IsNullOrEmpty(item.PhotoPath) ? "/img/blog-1.jpg" : item.PhotoPath)"
+                         alt="@item.BlogName"
+                         style="width:100%; height:200px; object-fit:cover;">
+
+                    <div style="padding:20px;">
+                        <small style="color:#2d6a4f; font-weight:600;">
+                            <i class="fa fa-calendar me-1"></i>
+                            @item.CreatedDate.ToString("dd MMM yyyy")
+                        </small>
+                        <h5 style="margin-top:8px; font-weight:700; color:#222;">@item.BlogName</h5>
+                        <p style="color:#666; font-size:14px; line-height:1.6;">
+                            @(item.Content.Length > 100 ? item.Content.Substring(0, 100) + "..." : item.Content)
+                        </p>
+                        <a asp-controller="Blog" asp-action="Detail" asp-route-id="@item.Id"
+                           style="background:#1b4332; color:white; padding:8px 20px; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">
+                            Devamını Oku
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

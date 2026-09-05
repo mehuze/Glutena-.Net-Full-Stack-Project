@@ -1,0 +1,172 @@
+﻿@{
+    ViewData["Title"] = "Çölyak Hastalığı Hakkında";
+}
+
+<!-- Header -->
+<div style="background: linear-gradient(135deg, #1b4332, #40916c); padding: 60px 0; text-align:center;">
+    <h1 style="color:white; font-weight:700;">Çölyak Hastalığı</h1>
+    <p style="color:rgba(255,255,255,0.75);">
+        <a asp-controller="Home" asp-action="Index" style="color:rgba(255,255,255,0.75); text-decoration:none;">Anasayfa</a> / Çölyak Hastalığı
+    </p>
+</div>
+
+<div class="container py-5">
+
+    <!-- Çölyak Nedir -->
+    <div style="background:white; border-radius:16px; padding:36px; border:1px solid #eee; margin-bottom:24px;">
+        <h3 style="color:#1b4332; font-weight:700; margin-bottom:16px;">🌾 Çölyak Hastalığı Nedir?</h3>
+        <p style="color:#555; line-height:1.8;">
+            Çölyak hastalığı, buğday, arpa ve çavdarda bulunan bir protein olan <strong>gluten</strong> tüketildiğinde
+            bağışıklık sisteminin ince bağırsağa zarar verdiği otoimmün bir hastalıktır.
+            Dünya genelinde yaklaşık her 100 kişiden 1'ini etkiler ancak vakaların büyük çoğunluğu tanısız kalmaktadır.
+        </p>
+        <p style="color:#555; line-height:1.8;">
+            Gluten hassasiyeti ise çölyaktan farklı olup bağışıklık sistemi tepkisi olmaksızın
+            gluten tüketiminin sindirim sistemi belirtilerine yol açtığı bir durumdur.
+        </p>
+    </div>
+
+    <!-- Belirtiler -->
+    <div style="background:white; border-radius:16px; padding:36px; border:1px solid #eee; margin-bottom:24px;">
+        <h3 style="color:#1b4332; font-weight:700; margin-bottom:20px;">🔍 Belirtiler</h3>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <h6 style="color:#2d6a4f; font-weight:700; margin-bottom:12px;">Sindirim Sistemi Belirtileri:</h6>
+                <ul style="color:#555; line-height:2;">
+                    <li>Karın şişkinliği ve gaz</li>
+                    <li>İshal veya kabızlık</li>
+                    <li>Karın ağrısı ve kramp</li>
+                    <li>Bulantı ve kusma</li>
+                    <li>Yağlı veya kötü kokulu dışkı</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h6 style="color:#2d6a4f; font-weight:700; margin-bottom:12px;">Genel Belirtiler:</h6>
+                <ul style="color:#555; line-height:2;">
+                    <li>Kronik yorgunluk ve halsizlik</li>
+                    <li>Açıklanamayan kilo kaybı</li>
+                    <li>Demir eksikliği anemisi</li>
+                    <li>Kemik ve eklem ağrısı</li>
+                    <li>Cilt döküntüsü (Dermatitis Herpetiformis)</li>
+                    <li>Baş ağrısı ve beyin sisi</li>
+                    <li>Depresyon ve anksiyete</li>
+                    <li>Ağız yaraları (aft)</li>
+                </ul>
+            </div>
+        </div>
+        <div style="background:#fff3cd; border-radius:8px; padding:14px; margin-top:16px;">
+            <p style="margin:0; color:#856404; font-size:14px;">
+                ⚠️ <strong>Dikkat:</strong> Çölyak hastalığı her zaman sindirim belirtisi vermez. Bazı kişilerde sadece yorgunluk, anemi veya cilt sorunları görülebilir.
+            </p>
+        </div>
+    </div>
+
+    <!-- Kan Tahlilleri -->
+    <div style="background:white; border-radius:16px; padding:36px; border:1px solid #eee; margin-bottom:24px;">
+        <h3 style="color:#1b4332; font-weight:700; margin-bottom:20px;">🩸 Kan Tahlilinde Nelere Bakılmalı?</h3>
+        <p style="color:#555; margin-bottom:20px;">Çölyak şüphesi durumunda doktorunuzdan aşağıdaki testleri isteyebilirsiniz:</p>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div style="background:#e9f5ee; border-radius:12px; padding:20px;">
+                    <h6 style="color:#1b4332; font-weight:700; margin-bottom:8px;">Anti-tTG IgA</h6>
+                    <p style="color:#555; font-size:13px; margin:0;">Çölyak için en önemli birincil tarama testi. Doku transglutaminaz antikorlarını ölçer.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="background:#e9f5ee; border-radius:12px; padding:20px;">
+                    <h6 style="color:#1b4332; font-weight:700; margin-bottom:8px;">Anti-endomyozyal antikor (EMA)</h6>
+                    <p style="color:#555; font-size:13px; margin:0;">Çölyak tanısını doğrulamak için kullanılan ikincil test.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="background:#e9f5ee; border-radius:12px; padding:20px;">
+                    <h6 style="color:#1b4332; font-weight:700; margin-bottom:8px;">Total IgA</h6>
+                    <p style="color:#555; font-size:13px; margin:0;">IgA eksikliği varsa Anti-tTG IgA sonuçları yanıltıcı olabilir. Mutlaka birlikte bakılmalıdır.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="background:#e9f5ee; border-radius:12px; padding:20px;">
+                    <h6 style="color:#1b4332; font-weight:700; margin-bottom:8px;">Demir & Ferritin</h6>
+                    <p style="color:#555; font-size:13px; margin:0;">Bağırsak emilim sorunu varsa düşük çıkar. Anemi kontrolü için gereklidir.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="background:#e9f5ee; border-radius:12px; padding:20px;">
+                    <h6 style="color:#1b4332; font-weight:700; margin-bottom:8px;">B12 & Folat</h6>
+                    <p style="color:#555; font-size:13px; margin:0;">İnce bağırsak hasarında emilim azalır. Sinir sistemi sağlığı için kritiktir.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="background:#e9f5ee; border-radius:12px; padding:20px;">
+                    <h6 style="color:#1b4332; font-weight:700; margin-bottom:8px;">D Vitamini</h6>
+                    <p style="color:#555; font-size:13px; margin:0;">Çölyak hastalarında sık görülen eksiklik. Kemik sağlığı için önemlidir.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="background:#f8d7da; border-radius:8px; padding:14px; margin-top:16px;">
+            <p style="margin:0; color:#721c24; font-size:14px;">
+                🚨 <strong>Önemli:</strong> Kan testi yaptırmadan önce glutensiz diyete geçmeyin! Gluten yemiyorsanız test sonuçları negatif çıkabilir ve tanı kaçabilir.
+            </p>
+        </div>
+    </div>
+
+    <!-- Erken Tanı -->
+    <div style="background:white; border-radius:16px; padding:36px; border:1px solid #eee; margin-bottom:24px;">
+        <h3 style="color:#1b4332; font-weight:700; margin-bottom:16px;">⏰ Erken Tanının Önemi</h3>
+        <p style="color:#555; line-height:1.8;">
+            Çölyak hastalığı tanısız kaldığında uzun vadede ciddi komplikasyonlara yol açabilir:
+        </p>
+        <div class="row g-3 mt-2">
+            <div class="col-md-4">
+                <div style="background:#f8f9fa; border-radius:12px; padding:16px; text-align:center;">
+                    <div style="font-size:32px; margin-bottom:8px;">🦴</div>
+                    <h6 style="color:#1b4332; font-weight:700;">Osteoporoz</h6>
+                    <p style="color:#666; font-size:13px; margin:0;">Kalsiyum emilim bozukluğu kemik erimesine yol açar.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="background:#f8f9fa; border-radius:12px; padding:16px; text-align:center;">
+                    <div style="font-size:32px; margin-bottom:8px;">🧠</div>
+                    <h6 style="color:#1b4332; font-weight:700;">Nörolojik Sorunlar</h6>
+                    <p style="color:#666; font-size:13px; margin:0;">Sinir sistemi hasarı ve beyin fonksiyon bozukluğu.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="background:#f8f9fa; border-radius:12px; padding:16px; text-align:center;">
+                    <div style="font-size:32px; margin-bottom:8px;">🤰</div>
+                    <h6 style="color:#1b4332; font-weight:700;">Üreme Sağlığı</h6>
+                    <p style="color:#666; font-size:13px; margin:0;">Kısırlık ve tekrarlayan düşük riskleri artabilir.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test ve Ürünler -->
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div style="background:#1b4332; border-radius:16px; padding:28px; text-align:center;">
+                <div style="font-size:40px; margin-bottom:12px;">🧪</div>
+                <h5 style="color:white; font-weight:700; margin-bottom:8px;">Gluten Testi Yapın</h5>
+                <p style="color:rgba(255,255,255,0.75); font-size:14px; margin-bottom:16px;">15 soruluk testimizle gluten duyarlılığı riskinizi öğrenin.</p>
+                <a asp-controller="Home" asp-action="Test"
+                   style="background:white; color:#1b4332; padding:10px 24px; border-radius:8px; text-decoration:none; font-weight:700; font-size:14px;">
+                    Testi Başlat →
+                </a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div style="background:#e9f5ee; border-radius:16px; padding:28px; text-align:center;">
+                <div style="font-size:40px; margin-bottom:12px;">🛒</div>
+                <h5 style="color:#1b4332; font-weight:700; margin-bottom:8px;">Glutensiz Ürünleri Keşfet</h5>
+                <p style="color:#555; font-size:14px; margin-bottom:16px;">Güvenli glutensiz ürünleri inceleyin ve satın alın.</p>
+                <a asp-controller="Product" asp-action="Index"
+                   style="background:#1b4332; color:white; padding:10px 24px; border-radius:8px; text-decoration:none; font-weight:700; font-size:14px;">
+                    Ürünleri İncele →
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>

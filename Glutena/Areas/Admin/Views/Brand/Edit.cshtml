@@ -1,0 +1,16 @@
+﻿@model Glutena.Models.Entities.Brand
+
+<h3 class="mb-4">Marka Düzenle</h3>
+
+<div class="card p-4" style="max-width:500px;">
+    <form asp-area="Admin" asp-controller="Brand" asp-action="Edit" method="post">
+        <input asp-for="Id" type="hidden" />
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-warning">Güncelle</button>
+        <a asp-area="Admin" asp-controller="Brand" asp-action="Index" class="btn btn-secondary ms-2">İptal</a>
+    </form>
+</div>

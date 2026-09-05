@@ -15,8 +15,10 @@ namespace Glutena.Models.Entities
 
         [DisplayName("İçerik")]
         [Required(ErrorMessage = "İçerik Zorunlu Alan")]
-        [StringLength(150, ErrorMessage = "En Fazla 150 Karakter Girilebilir")]
-        public string Content { get; set; } = string.Empty;
+        [StringLength(750, ErrorMessage = "En Fazla 750 Karakter Girilebilir")]
+
+        [Column(TypeName = "nvarchar(max)")]
+        public string Content { get; set; }
 
 
         [DisplayName("Oluşturulma Tarihi")]

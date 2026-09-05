@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace Glutena.Models.Entities
 {
@@ -18,6 +20,9 @@ namespace Glutena.Models.Entities
         [StringLength(1000, ErrorMessage = "En fazla 1000 karakter girilebilir.")]
         public string Content { get; set; } = string.Empty;
 
+        [DisplayName("Puan")]
+        [Range(1, 5, ErrorMessage = "Puan 1 ile 5 arasında olmalıdır.")]
+        public int Rating { get; set; }
 
         [DisplayName("Onaylı mı?")]
         public bool IsApproved { get; set; } = false;
@@ -31,7 +36,7 @@ namespace Glutena.Models.Entities
         public Product? Product { get; set; }
 
         [DisplayName("Yazar")]
-        public int UserId { get; set; }
-        public User? User { get; set; }
+        public string? UserId { get; set; }
+        public IdentityUser? User { get; set; }
     }
 }

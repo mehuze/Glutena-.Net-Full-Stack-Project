@@ -1,0 +1,27 @@
+﻿@model Glutena.Models.Entities.Blog
+
+<div class="container mt-4">
+    <h2>Yeni Blog Ekle</h2>
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label class="form-label">Başlık</label>
+            <input asp-for="BlogName" class="form-control" />
+            <span asp-validation-for="BlogName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">İçerik</label>
+            <textarea asp-for="Content" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Resim Seç</label>
+            <input type="file" name="photoFile" class="form-control" accept="image/*" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="IsActive" class="form-label">Aktif</label>
+            <input asp-for="IsActive" class="form-check-input ms-2" type="checkbox" />
+        </div>
+        <button type="submit" class="btn btn-success">Kaydet</button>
+        <a asp-area="Admin" asp-controller="Blog" asp-action="Index" class="btn btn-secondary ms-2">Geri</a>
+    </form>
+</div>

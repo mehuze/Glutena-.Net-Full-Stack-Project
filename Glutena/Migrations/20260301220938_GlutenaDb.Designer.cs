@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Glutena.Migrations
 {
     [DbContext(typeof(GlutenaDbContext))]
-    [Migration("20260225221336_AddAffiliateAndSponsorFields")]
-    partial class AddAffiliateAndSponsorFields
+    [Migration("20260301220938_GlutenaDb")]
+    partial class GlutenaDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -255,9 +255,6 @@ namespace Glutena.Migrations
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -274,17 +271,14 @@ namespace Glutena.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("HighLighted")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsHighlighted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsSponsored")
                         .HasColumnType("bit");
-
-                    b.Property<int>("Kdv")
-                        .HasColumnType("int");
 
                     b.Property<string>("Keywords")
                         .HasColumnType("nvarchar(max)");
@@ -292,7 +286,7 @@ namespace Glutena.Migrations
                     b.Property<string>("PhotoPath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductName")
@@ -300,11 +294,10 @@ namespace Glutena.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<decimal>("Rating")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Related")
-                        .HasColumnType("int");
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<int>("SponsorPriority")
                         .HasColumnType("int");
@@ -319,11 +312,24 @@ namespace Glutena.Migrations
 
                     b.HasIndex("BrandId");
 
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Glutena.Models.Entities.ProductCategory", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("Glutena.Models.Entities.Testimonial", b =>
@@ -440,7 +446,7 @@ namespace Glutena.Migrations
             modelBuilder.Entity("Glutena.Models.Entities.Experience", b =>
                 {
                     b.HasOne("Glutena.Models.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("Experiences")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -464,19 +470,30 @@ namespace Glutena.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Glutena.Models.Entities.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Glutena.Models.Entities.User", null)
                         .WithMany("Products")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Brand");
+                });
+
+            modelBuilder.Entity("Glutena.Models.Entities.ProductCategory", b =>
+                {
+                    b.HasOne("Glutena.Models.Entities.Category", "Category")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Glutena.Models.Entities.Product", "Product")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Glutena.Models.Entities.Testimonial", b =>
@@ -495,7 +512,14 @@ namespace Glutena.Migrations
                 {
                     b.Navigation("Children");
 
-                    b.Navigation("Products");
+                    b.Navigation("ProductCategories");
+                });
+
+            modelBuilder.Entity("Glutena.Models.Entities.Product", b =>
+                {
+                    b.Navigation("Experiences");
+
+                    b.Navigation("ProductCategories");
                 });
 
             modelBuilder.Entity("Glutena.Models.Entities.User", b =>

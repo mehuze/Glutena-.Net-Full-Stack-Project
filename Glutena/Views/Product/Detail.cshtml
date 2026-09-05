@@ -1,0 +1,169 @@
+﻿@model Glutena.Models.Entities.Product
+@{
+    ViewData["Title"] = Model.ProductName;
+}
+
+<!-- Header -->
+<div style="background: linear-gradient(135deg, #1b4332, #40916c); padding: 40px 0; text-align:center;">
+    <h1 style="color:white; font-weight:700; font-size:28px;">@Model.ProductName</h1>
+    <p style="color:rgba(255,255,255,0.75);">
+        <a asp-controller="Home" asp-action="Index" style="color:rgba(255,255,255,0.75); text-decoration:none;">Anasayfa</a> /
+        <a asp-controller="Product" asp-action="Index" style="color:rgba(255,255,255,0.75); text-decoration:none;">Ürünler</a> /
+        @Model.ProductName
+    </p>
+</div>
+
+<div class="container py-5">
+    <div class="row g-5">
+
+        <!-- SOL: Resim -->
+        <div class="col-md-5">
+            <div style="background:white; border-radius:16px; padding:30px; border:1px solid #eee; text-align:center;">
+                @if (!string.IsNullOrEmpty(Model.PhotoPath))
+                {
+                    <img src="@Model.PhotoPath" alt="@Model.ProductName"
+                         style="max-height:300px; object-fit:contain; width:100%; cursor:pointer;"
+                         onclick="document.getElementById('imgModal').style.display='flex'" />
+
+                    <!-- Modal -->
+                    <div id="imgModal" onclick="this.style.display='none'"
+                         style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999; align-items:center; justify-content:center;">
+                        <img src="@Model.PhotoPath" style="max-width:90%; max-height:90%; border-radius:12px;" />
+                    </div>
+                }
+                else
+                {
+                    <div style="height:300px; background:#f0f0f0; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#aaa;">
+                        Görsel Yok
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- SAĞ: Bilgiler -->
+        <div class="col-md-7">
+            <div style="background:white; border-radius:16px; padding:30px; border:1px solid #eee;">
+
+                @if (Model.IsSponsored)
+                {
+                    <span style="background:#fff3cd; color:#856404; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600;">
+                        ⭐ Sponsorlu Ürün
+                    </span>
+                }
+
+                <h2 style="font-weight:700; color:#1b4332; margin-top:12px;">@Model.ProductName</h2>
+
+                @if (Model.Experiences != null && Model.Experiences.Any())
+                {
+                    var avg = Model.Experiences.Average(x => x.Rating);
+                    <div style="margin-bottom:12px;">
+                        <span style="color:#f4a261; font-size:18px;">★★★★★</span>
+                        <span style="color:#555; font-size:14px; margin-left:6px;">@avg.ToString("0.0") / 5 (@Model.Experiences.Count() yorum)</span>
+                    </div>
+                }
+                else
+                {
+                    <p style="color:#aaa; font-size:14px;">Henüz puan verilmemiş.</p>
+                }
+
+                <div style="display:flex; flex-direction:column; gap:10px; margin:20px 0;">
+                    <div style="display:flex; gap:12px;">
+                        <span style="color:#888; width:120px;">Marka</span>
+                        <span style="font-weight:600; color:#222;">@Model.Brand?.Name</span>
+                    </div>
+                    <div style="display:flex; gap:12px;">
+                        <span style="color:#888; width:120px;">Gluten Durumu</span>
+                        <span style="font-weight:600; color:#2d6a4f;">@Model.GlutenStatus</span>
+                    </div>
+                    @if (Model.Price.HasValue)
+                    {
+                        <div style="display:flex; gap:12px;">
+                            <span style="color:#888; width:120px;">Fiyat</span>
+                            <span style="font-weight:700; color:#1b4332; font-size:20px;">@Model.Price ₺</span>
+                        </div>
+                    }
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.AffiliateUrl))
+                {
+                    <a href="@Model.AffiliateUrl" target="_blank"
+                       style="background:#1b4332; color:white; padding:12px 28px; border-radius:8px; text-decoration:none; font-weight:600; display:inline-block; margin-top:8px;">
+                        Satın Al →
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Açıklama -->
+    <div style="background:white; border-radius:16px; padding:30px; border:1px solid #eee; margin-top:24px;">
+        <h4 style="color:#1b4332; font-weight:700; margin-bottom:16px;">Ürün Açıklaması</h4>
+        <p style="color:#555; line-height:1.8;">@Model.Description</p>
+    </div>
+
+    <!-- Kullanıcı Yorumları -->
+    <div style="background:white; border-radius:16px; padding:30px; border:1px solid #eee; margin-top:24px;">
+        <h4 style="color:#1b4332; font-weight:700; margin-bottom:20px;">Kullanıcı Deneyimleri</h4>
+        @if (Model.Experiences != null && Model.Experiences.Any())
+        {
+            foreach (var exp in Model.Experiences)
+            {
+                <div style="border:1px solid #eee; border-radius:12px; padding:20px; margin-bottom:16px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                        <h6 style="font-weight:700; color:#222; margin:0;">@exp.Title</h6>
+                        <span style="color:#f4a261;">@string.Concat(Enumerable.Repeat("★", exp.Rating))</span>
+                    </div>
+                    <p style="color:#555; margin:0;">@exp.Content</p>
+                </div>
+            }
+        }
+        else
+        {
+            <p style="color:#aaa;">Henüz deneyim eklenmemiş.</p>
+        }
+    </div>
+
+    <!-- Deneyim Ekle -->
+    <div style="background:white; border-radius:16px; padding:30px; border:1px solid #eee; margin-top:24px;">
+        <h4 style="color:#1b4332; font-weight:700; margin-bottom:20px;">Deneyim Ekle</h4>
+
+        @if (TempData["Error"] != null)
+        {
+            <div style="background:#f8d7da; border:1px solid #f5c6cb; border-radius:8px; padding:14px; margin-bottom:16px;">
+                <p style="color:#721c24; margin:0;">⚠️ @TempData["Error"]</p>
+            </div>
+        }
+
+        @if (TempData["Success"] != null)
+        {
+            <div style="background:#d4edda; border:1px solid #c3e6cb; border-radius:8px; padding:14px; margin-bottom:16px;">
+                <p style="color:#155724; margin:0;">✅ @TempData["Success"]</p>
+            </div>
+        }
+
+        <form asp-controller="Experience" asp-action="Create" method="post">
+            <input type="hidden" name="ProductId" value="@Model.Id" />
+            <input type="hidden" name="UserId" value="1" />
+            <div class="mb-3">
+                <label style="font-weight:600; color:#444;">Başlık</label>
+                <input type="text" name="Title" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label style="font-weight:600; color:#444;">Yorum</label>
+                <textarea name="Content" class="form-control" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label style="font-weight:600; color:#444;">Puan (1-5)</label>
+                <input type="number" name="Rating" class="form-control" min="1" max="5" required />
+            </div>
+            <button type="submit"
+                    style="background:#1b4332; color:white; padding:12px 28px; border-radius:8px; border:none; font-weight:600;">
+                Gönder
+            </button>
+        </form>
+    </div>
+    <a asp-controller="Product" asp-action="Index"
+       style="display:inline-block; margin-top:24px; color:#1b4332; font-weight:600; text-decoration:none;">
+        ← Ürünlere Dön
+    </a>
+</div>

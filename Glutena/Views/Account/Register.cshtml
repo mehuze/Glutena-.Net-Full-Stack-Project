@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div style="background: linear-gradient(135deg, #1b4332, #40916c); padding: 60px 0; text-align:center;">
+    <h1 style="color:white; font-weight:700;">Kayıt Ol</h1>
+    <p style="color:rgba(255,255,255,0.75);">
+        <a href="/" style="color:rgba(255,255,255,0.75); text-decoration:none;">Anasayfa</a> / Kayıt
+    </p>
+</div>
+
+<div class="container py-5">
+    <div style="max-width:450px; margin:0 auto;">
+        <div style="background:white; border-radius:16px; padding:36px; border:1px solid #eee;">
+
+            <h4 style="color:#1b4332; font-weight:700; margin-bottom:24px; text-align:center;">Yeni Hesap Oluştur</h4>
+
+            @if (ViewBag.Error != null)
+            {
+                <div style="background:#f8d7da; border-radius:8px; padding:12px; margin-bottom:16px;">
+                    <p style="color:#721c24; margin:0; font-size:14px;">⚠️ @ViewBag.Error</p>
+                </div>
+            }
+
+            <form method="post" action="/Account/Register">
+                <div class="mb-3">
+                    <label style="font-weight:600; color:#444;">E-posta</label>
+                    <input type="email" name="email" class="form-control" placeholder="ornek@mail.com" required />
+                </div>
+                <div class="mb-3">
+                    <label style="font-weight:600; color:#444;">Şifre</label>
+                    <input type="password" name="password" class="form-control" placeholder="En az 6 karakter" required />
+                </div>
+                <div class="mb-3">
+                    <label style="font-weight:600; color:#444;">Şifre Tekrar</label>
+                    <input type="password" name="confirmPassword" class="form-control" placeholder="Şifrenizi tekrar girin" required />
+                </div>
+                <button type="submit"
+                        style="background:#1b4332; color:white; padding:12px; border-radius:8px; border:none; font-weight:700; width:100%; font-size:15px;">
+                    Kayıt Ol
+                </button>
+            </form>
+
+            <div style="text-align:center; margin-top:20px;">
+                <p style="color:#888; font-size:14px;">
+                    Zaten hesabınız var mı?
+                    <a href="/Account/Login" style="color:#1b4332; font-weight:600;">Giriş Yap</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

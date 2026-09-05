@@ -9,12 +9,8 @@ namespace Glutena.Models.Entities
 
         public ICollection<ProductCategory> ProductCategories { get; set; }
     = new List<ProductCategory>();
-
-        [DisplayName("Kategori")]
-        public int CategoryId { get; set; }
-
-        public Category? Category { get; set; }
-
+        public ICollection<Experience> Experiences { get; set; }
+    = new List<Experience>();
 
         [DisplayName("Ürün Adı")]
         [Required(ErrorMessage = "Ürün Adı Zorunlu Alan")]
@@ -32,7 +28,9 @@ namespace Glutena.Models.Entities
         [StringLength(50, ErrorMessage = "En Fazla 50 Karakter Girilebilir")]
         public string GlutenStatus { get; set; } = string.Empty;
 
-
+        [Required]
+        [StringLength(150)]
+        public string Slug { get; set; } = string.Empty;
 
         [DisplayName("Çapraz Bulaşma Riski")]
         public bool CrossContaminationRisk { get; set; }
@@ -40,22 +38,10 @@ namespace Glutena.Models.Entities
 
 
         [DisplayName("Aktif/Pasif")]
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
-        [Required(ErrorMessage = "Fiyat zorunludur.")]
-        [Range(0, 100000, ErrorMessage = "Fiyat 0'dan büyük olmalıdır.")]
         [DisplayName("Birim Fiyat")]
-        public decimal Price { get; set; }
-
-
-        private int _Kdv {  get; set; }
-        public int Kdv
-        { get { return _Kdv; } 
-            set { _Kdv =Math.Abs( value); }
-        }
-        [DisplayName("Puan")]
-        [Range(0, 5, ErrorMessage = "Puan 0-5 arasında olmalıdır.")]
-        public decimal Rating { get; set; } = 0;
+        public decimal? Price { get; set; }
 
         [DisplayName("Resim")]
         public string? PhotoPath { get; set; }
@@ -63,13 +49,13 @@ namespace Glutena.Models.Entities
         [DisplayName("Anahtar Kelimeler")]
         public string? Keywords { get; set; }
 
-        public int HighLighted { get; set; } //öne cıkanlar = like
+        public bool IsHighlighted { get; set; } = false;
 
         //[DisplayName("Çok Satanlar")]
         //public int TopSeller { get; set; } //CokSatanlar
 
-        [DisplayName("BunaBakan")]
-        public int Related { get; set; } //BunaBakanlar / buna bakan buna da baktı
+        //[DisplayName("BunaBakan")]
+        //public int Related { get; set; } //BunaBakanlar / buna bakan buna da baktı
         public int BrandId { get; set; }
         public Brand? Brand { get; set; }
         public string? AffiliateUrl { get; set; }
@@ -78,6 +64,29 @@ namespace Glutena.Models.Entities
 
         public int SponsorPriority { get; set; } = 0;
 
+        // Hesaplanan Alanlar
+        [NotMapped]
+        public double AverageRating
+        {
+            get
+            {
+                if (Experiences == null || !Experiences.Any())
+                    return 0;
 
+                return Experiences.Average(x => x.Rating);
+            }
+        }
+
+
+        [NotMapped]
+        public int ExperienceCount
+        {
+            get
+            {
+                return Experiences?.Count ?? 0;
+            }
+        }
     }
+
+
 }

@@ -1,0 +1,259 @@
+﻿@{
+    ViewData["Title"] = "Gluten Testi";
+}
+
+<!-- Header -->
+<div style="background: linear-gradient(135deg, #1b4332, #40916c); padding: 60px 0; text-align:center;">
+    <h1 style="color:white; font-weight:700;">Gluten Duyarlılığı Testi</h1>
+    <p style="color:rgba(255,255,255,0.75);">
+        <a asp-controller="Home" asp-action="Index" style="color:rgba(255,255,255,0.75); text-decoration:none;">Anasayfa</a> / Test
+    </p>
+</div>
+
+<div class="container py-5" style="max-width:750px;">
+
+    <!-- Uyarı -->
+    <div style="background:#fff3cd; border:1px solid #ffc107; border-radius:12px; padding:16px 20px; margin-bottom:32px;">
+        <p style="margin:0; color:#856404; font-size:14px;">
+            ⚠️ <strong>Önemli:</strong> Bu test tıbbi bir tanı aracı değildir. Sonuçlar yalnızca bilgilendirme amaçlıdır. Kesin tanı için mutlaka bir doktora başvurun.
+        </p>
+    </div>
+
+    <!-- Test Formu -->
+    <div style="background:white; border-radius:16px; padding:36px; border:1px solid #eee;">
+        <h4 style="color:#1b4332; font-weight:700; margin-bottom:8px;">Aşağıdaki soruları yanıtlayın:</h4>
+        <p style="color:#888; font-size:13px; margin-bottom:28px;">Son 3 ay içindeki durumunuzu göz önünde bulundurarak yanıtlayın.</p>
+
+        <div id="testForm">
+
+            <!-- SİNDİRİM SİSTEMİ -->
+            <h6 style="color:#2d6a4f; font-weight:700; margin-bottom:16px; padding-bottom:8px; border-bottom:2px solid #e9f5ee;">🫁 Sindirim Sistemi</h6>
+
+            <div class="test-question mb-4" style="padding-bottom:20px; border-bottom:1px solid #f0f0f0;">
+                <p style="font-weight:600; color:#222; margin-bottom:12px;">1. Ekmek, makarna veya unlu mamül yedikten sonra karın şişkinliği hissediyor musunuz?</p>
+                <div style="display:flex; gap:16px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q1" value="1" /> Evet</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q1" value="0" /> Hayır</label>
+                </div>
+            </div>
+
+            <div class="test-question mb-4" style="padding-bottom:20px; border-bottom:1px solid #f0f0f0;">
+                <p style="font-weight:600; color:#222; margin-bottom:12px;">2. Yemekten 30-60 dakika sonra karın ağrısı veya kramp yaşıyor musunuz?</p>
+                <div style="display:flex; gap:16px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q2" value="1" /> Evet</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q2" value="0" /> Hayır</label>
+                </div>
+            </div>
+
+            <div class="test-question mb-4" style="padding-bottom:20px; border-bottom:1px solid #f0f0f0;">
+                <p style="font-weight:600; color:#222; margin-bottom:12px;">3. Sık sık ishal, kabızlık veya gaz problemi yaşıyor musunuz?</p>
+                <div style="display:flex; gap:16px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q3" value="1" /> Evet</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q3" value="0" /> Hayır</label>
+                </div>
+            </div>
+
+            <div class="test-question mb-4" style="padding-bottom:20px; border-bottom:1px solid #f0f0f0;">
+                <p style="font-weight:600; color:#222; margin-bottom:12px;">4. Dışkınızda yağlı, köpüklü veya kötü kokulu bir görünüm fark ettiniz mi?</p>
+                <div style="display:flex; gap:16px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q4" value="1" /> Evet</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q4" value="0" /> Hayır</label>
+                </div>
+            </div>
+
+            <div class="test-question mb-4" style="padding-bottom:20px; border-bottom:1px solid #f0f0f0;">
+                <p style="font-weight:600; color:#222; margin-bottom:12px;">5. Mide bulantısı veya kusma yaşıyor musunuz?</p>
+                <div style="display:flex; gap:16px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q5" value="1" /> Evet</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q5" value="0" /> Hayır</label>
+                </div>
+            </div>
+
+            <!-- GENEL BELİRTİLER -->
+            <h6 style="color:#2d6a4f; font-weight:700; margin-bottom:16px; padding-bottom:8px; border-bottom:2px solid #e9f5ee; margin-top:24px;">💪 Genel Belirtiler</h6>
+
+            <div class="test-question mb-4" style="padding-bottom:20px; border-bottom:1px solid #f0f0f0;">
+                <p style="font-weight:600; color:#222; margin-bottom:12px;">6. Açıklanamayan yorgunluk ve halsizlik hissediyor musunuz?</p>
+                <div style="display:flex; gap:16px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q6" value="1" /> Evet</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q6" value="0" /> Hayır</label>
+                </div>
+            </div>
+
+            <div class="test-question mb-4" style="padding-bottom:20px; border-bottom:1px solid #f0f0f0;">
+                <p style="font-weight:600; color:#222; margin-bottom:12px;">7. Açıklanamayan kilo kaybı yaşıyor musunuz?</p>
+                <div style="display:flex; gap:16px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q7" value="1" /> Evet</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q7" value="0" /> Hayır</label>
+                </div>
+            </div>
+
+            <div class="test-question mb-4" style="padding-bottom:20px; border-bottom:1px solid #f0f0f0;">
+                <p style="font-weight:600; color:#222; margin-bottom:12px;">8. Ağzınızda tekrarlayan yaralar (aft) çıkıyor mu?</p>
+                <div style="display:flex; gap:16px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q8" value="1" /> Evet</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q8" value="0" /> Hayır</label>
+                </div>
+            </div>
+
+            <div class="test-question mb-4" style="padding-bottom:20px; border-bottom:1px solid #f0f0f0;">
+                <p style="font-weight:600; color:#222; margin-bottom:12px;">9. Kemik ağrısı veya diş sağlığında sorun yaşıyor musunuz?</p>
+                <div style="display:flex; gap:16px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q9" value="1" /> Evet</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q9" value="0" /> Hayır</label>
+                </div>
+            </div>
+
+            <div class="test-question mb-4" style="padding-bottom:20px; border-bottom:1px solid #f0f0f0;">
+                <p style="font-weight:600; color:#222; margin-bottom:12px;">10. Cilt döküntüsü veya kaşıntı yaşıyor musunuz?</p>
+                <div style="display:flex; gap:16px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q10" value="1" /> Evet</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q10" value="0" /> Hayır</label>
+                </div>
+            </div>
+
+            <!-- ZİHİNSEL BELİRTİLER -->
+            <h6 style="color:#2d6a4f; font-weight:700; margin-bottom:16px; padding-bottom:8px; border-bottom:2px solid #e9f5ee; margin-top:24px;">🧠 Zihinsel Belirtiler</h6>
+
+            <div class="test-question mb-4" style="padding-bottom:20px; border-bottom:1px solid #f0f0f0;">
+                <p style="font-weight:600; color:#222; margin-bottom:12px;">11. Konsantrasyon güçlüğü veya beyin sisi hissediyor musunuz?</p>
+                <div style="display:flex; gap:16px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q11" value="1" /> Evet</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q11" value="0" /> Hayır</label>
+                </div>
+            </div>
+
+            <div class="test-question mb-4" style="padding-bottom:20px; border-bottom:1px solid #f0f0f0;">
+                <p style="font-weight:600; color:#222; margin-bottom:12px;">12. Depresyon veya anksiyete belirtileri yaşıyor musunuz?</p>
+                <div style="display:flex; gap:16px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q12" value="1" /> Evet</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q12" value="0" /> Hayır</label>
+                </div>
+            </div>
+
+            <!-- AİLE GEÇMİŞİ -->
+            <h6 style="color:#2d6a4f; font-weight:700; margin-bottom:16px; padding-bottom:8px; border-bottom:2px solid #e9f5ee; margin-top:24px;">👨‍👩‍👧 Aile Geçmişi & Diğer</h6>
+
+            <div class="test-question mb-4" style="padding-bottom:20px; border-bottom:1px solid #f0f0f0;">
+                <p style="font-weight:600; color:#222; margin-bottom:12px;">13. Ailede çölyak hastalığı veya gluten duyarlılığı olan var mı?</p>
+                <div style="display:flex; gap:16px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q13" value="1" /> Evet</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q13" value="0" /> Hayır</label>
+                </div>
+            </div>
+
+            <div class="test-question mb-4" style="padding-bottom:20px; border-bottom:1px solid #f0f0f0;">
+                <p style="font-weight:600; color:#222; margin-bottom:12px;">14. Tip 1 diyabet veya tiroid hastalığı tanısı aldınız mı?</p>
+                <div style="display:flex; gap:16px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q14" value="1" /> Evet</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q14" value="0" /> Hayır</label>
+                </div>
+            </div>
+
+            <div class="test-question mb-4" style="padding-bottom:20px; border-bottom:1px solid #f0f0f0;">
+                <p style="font-weight:600; color:#222; margin-bottom:12px;">15. Demir eksikliği veya anemi tanısı aldınız mı?</p>
+                <div style="display:flex; gap:16px;">
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q15" value="1" /> Evet</label>
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px;"><input type="radio" name="q15" value="0" /> Hayır</label>
+                </div>
+            </div>
+
+            <button onclick="calculateResult()"
+                    style="background:#1b4332; color:white; padding:14px 36px; border-radius:8px; border:none; font-weight:700; width:100%; font-size:16px; margin-top:8px;">
+                Sonucu Gör
+            </button>
+        </div>
+
+        <!-- Sonuç -->
+        <div id="result" style="display:none; margin-top:24px;"></div>
+    </div>
+</div>
+
+<script>
+    function calculateResult() {
+        var score = 0;
+        var allAnswered = true;
+        var totalQuestions = 15;
+
+        for (var i = 1; i <= totalQuestions; i++) {
+            var radios = document.getElementsByName('q' + i);
+            var answered = false;
+            for (var j = 0; j < radios.length; j++) {
+                if (radios[j].checked) {
+                    score += parseInt(radios[j].value);
+                    answered = true;
+                }
+            }
+            if (!answered) allAnswered = false;
+        }
+
+        if (!allAnswered) {
+            alert('Lütfen tüm soruları yanıtlayın.');
+            return;
+        }
+
+        var resultDiv = document.getElementById('result');
+        var html = '';
+
+        if (score <= 3) {
+            html = `
+                <div style="background:#d4edda; border-radius:12px; padding:24px; text-align:center;">
+                    <div style="font-size:48px; margin-bottom:12px;">✅</div>
+                    <h4 style="color:#155724; font-weight:700;">Düşük Risk</h4>
+                    <p style="color:#155724;">Belirtileriniz gluten duyarlılığına güçlü bir şekilde işaret etmiyor. Ancak şikayetleriniz devam ederse bir doktora danışmanızı öneririz.</p>
+                </div>`;
+        } else if (score <= 7) {
+            html = `
+                <div style="background:#fff3cd; border-radius:12px; padding:24px; text-align:center;">
+                    <div style="font-size:48px; margin-bottom:12px;">⚠️</div>
+                    <h4 style="color:#856404; font-weight:700;">Orta Risk</h4>
+                    <p style="color:#856404;">Bazı belirtileriniz gluten duyarlılığıyla uyuşuyor. Bir gastroenteroloji uzmanına başvurmanızı öneririz.</p>
+                    <div style="background:white; border-radius:8px; padding:16px; margin-top:16px; text-align:left;">
+                        <p style="font-weight:700; color:#856404; margin-bottom:8px;">🩸 Doktorunuzdan şu testleri isteyin:</p>
+                        <ul style="color:#856404; font-size:14px; margin:0; padding-left:20px;">
+                            <li>Anti-tTG IgA</li>
+                            <li>Total IgA</li>
+                            <li>Demir ve Ferritin</li>
+                            <li>Tam kan sayımı</li>
+                        </ul>
+                    </div>
+                </div>`;
+        } else {
+            html = `
+                <div style="background:#f8d7da; border-radius:12px; padding:24px; text-align:center;">
+                    <div style="font-size:48px; margin-bottom:12px;">🚨</div>
+                    <h4 style="color:#721c24; font-weight:700;">Yüksek Risk</h4>
+                    <p style="color:#721c24;">Belirtileriniz gluten duyarlılığı veya çölyak hastalığıyla güçlü biçimde örtüşüyor. En kısa sürede bir gastroenteroloji uzmanına başvurun.</p>
+                    <div style="background:white; border-radius:8px; padding:16px; margin-top:16px; text-align:left;">
+                        <p style="font-weight:700; color:#721c24; margin-bottom:8px;">🩸 Doktorunuzdan şu testleri isteyin:</p>
+                        <ul style="color:#721c24; font-size:14px; margin:0; padding-left:20px;">
+                            <li>Anti-tTG IgA (birincil tarama)</li>
+                            <li>Anti-endomyozyal antikor (EMA)</li>
+                            <li>Total IgA</li>
+                            <li>Demir, Ferritin</li>
+                            <li>B12 ve Folat</li>
+                            <li>D vitamini</li>
+                            <li>Tam kan sayımı</li>
+                        </ul>
+                    </div>
+                </div>`;
+        }
+
+        html += `
+            <div style="background:#e9f5ee; border-radius:12px; padding:16px; margin-top:16px; text-align:center;">
+                <p style="color:#1b4332; margin:0; font-size:13px;">
+                    ⚕️ <strong>Hatırlatma:</strong> Bu test tıbbi tanı koymaz. Kesin tanı için mutlaka bir doktora başvurun.
+                </p>
+            </div>
+            <div style="text-align:center; margin-top:16px;">
+                <a href="/Product"
+                   style="background:#1b4332; color:white; padding:10px 24px; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">
+                    Glutensiz Ürünleri İncele →
+                </a>
+            </div>`;
+
+        resultDiv.innerHTML = html;
+        resultDiv.style.display = 'block';
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>

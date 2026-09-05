@@ -1,0 +1,39 @@
+﻿@model Glutena.Models.Entities.Blog
+
+@{
+    ViewData["Title"] = Model.BlogName;
+}
+
+<div class="container py-5">
+
+    <h1 class="mb-4">
+        @Model.BlogName
+    </h1>
+
+    @if (!string.IsNullOrEmpty(Model.PhotoPath))
+    {
+        <img src="@Model.PhotoPath"
+             class="img-fluid mb-4"
+             alt="@Model.BlogName" />
+    }
+
+    <p class="text-muted">
+        <i class="fa fa-calendar text-primary me-2"></i>
+        @Model.CreatedDate.ToString("dd MMM yyyy")
+    </p>
+
+    <hr />
+
+    <p>
+        @Model.Content
+    </p>
+
+    <a asp-controller="Blog"
+       asp-action="Index"
+       class="btn btn-secondary mt-4">
+
+        Blog'a  Geri Dön
+
+    </a>
+
+</div>
