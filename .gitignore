@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+# Yerel ayarlar ve þifreler GitHub'a gönderilmesin
+Glutena/appsettings.Development.json
