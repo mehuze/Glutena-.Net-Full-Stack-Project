@@ -1,0 +1,202 @@
+﻿@model Glutena.Models.Entities.ContentPage
+@{
+    ViewData["Title"] = Model.Title;
+    var sections = Model.Sections.ToList();
+}
+
+<style>
+    .cp-wrap {
+        max-width: 860px;
+        margin: 0 auto;
+    }
+
+    .cp-card {
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 16px;
+        padding: 30px;
+        margin-bottom: 24px;
+        scroll-margin-top: 110px;
+    }
+
+        .cp-card h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1b4332;
+            margin-bottom: 14px;
+        }
+
+        .cp-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #2d6a4f;
+            margin: 18px 0 8px;
+        }
+
+        .cp-card p, .cp-card li {
+            color: #444;
+            line-height: 1.75;
+        }
+
+        .cp-card ul, .cp-card ol {
+            padding-left: 20px;
+        }
+
+        .cp-card li {
+            margin-bottom: 6px;
+        }
+
+        .cp-card a:not(.cp-btn) {
+            color: #2d6a4f;
+            font-weight: 600;
+        }
+
+    .cp-num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #e9f5ee;
+        color: #1b4332;
+        font-weight: 700;
+        font-size: 15px;
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+
+    .cp-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        margin-bottom: 24px;
+    }
+
+        .cp-chips a {
+            background: white;
+            border: 1px solid #d8f3dc;
+            color: #1b4332;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+            .cp-chips a:hover, .cp-chips a:focus-visible {
+                background: #1b4332;
+                color: white;
+                outline: none;
+            }
+
+    .cp-note {
+        background: #f3faf6;
+        border-left: 4px solid #2d6a4f;
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin: 16px 0;
+        color: #1b4332;
+    }
+
+    .cp-warn {
+        background: #fff8e6;
+        border-left: 4px solid #e0a100;
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin: 16px 0;
+        color: #5c4300;
+    }
+
+    .cp-btn {
+        display: inline-block;
+        background: #1b4332;
+        color: white;
+        padding: 11px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        margin: 6px 6px 0 0;
+    }
+
+        .cp-btn:hover {
+            color: white;
+            background: #2d6a4f;
+        }
+
+    .cp-btn-outline {
+        background: white;
+        color: #1b4332;
+        border: 2px solid #1b4332;
+        padding: 9px 22px;
+    }
+
+        .cp-btn-outline:hover {
+            background: #1b4332;
+            color: white;
+        }
+
+    @@media (max-width: 640px) {
+        .cp-card {
+            padding: 22px;
+        }
+    }
+</style>
+
+<!-- Header -->
+<div style="background: linear-gradient(135deg, #1b4332, #40916c); padding: 56px 0; text-align:center;">
+    @if (!string.IsNullOrEmpty(Model.Icon))
+    {
+        <div style="font-size:40px; margin-bottom:6px;">@Model.Icon</div>
+    }
+    <h1 style="color:white; font-weight:700; margin-bottom:8px;">@Model.Title</h1>
+    @if (!string.IsNullOrEmpty(Model.Subtitle))
+    {
+        <p style="color:rgba(255,255,255,0.85); font-size:17px; margin:0 auto; max-width:36em; padding:0 16px;">@Model.Subtitle</p>
+    }
+    <p style="color:rgba(255,255,255,0.65); margin:12px 0 0;">
+        <a asp-controller="Home" asp-action="Index" style="color:rgba(255,255,255,0.65); text-decoration:none;">Anasayfa</a> / @Model.Title
+    </p>
+</div>
+
+<div class="container py-5">
+    <div class="cp-wrap">
+
+        <!-- Giriş metni -->
+        @if (!string.IsNullOrWhiteSpace(Model.Intro))
+        {
+            <div class="cp-card" style="font-size:17px;">
+                @Html.Raw(Model.Intro)
+            </div>
+        }
+
+        <!-- Hızlı geçiş butonları (2'den fazla bölüm varsa) -->
+        @if (sections.Count > 2)
+        {
+            <nav class="cp-chips" aria-label="Sayfa bölümleri">
+                @foreach (var s in sections)
+                {
+                    <a href="#bolum-@s.Id">@s.Icon @(string.IsNullOrWhiteSpace(s.ShortTitle) ? s.Title : s.ShortTitle)</a>
+                }
+            </nav>
+        }
+
+        <!-- Bölümler -->
+        @for (int i = 0; i < sections.Count; i++)
+        {
+            var s = sections[i];
+            <section id="bolum-@s.Id" class="cp-card">
+                <h2><span class="cp-num">@(i + 1)</span>@s.Icon @s.Title</h2>
+                @Html.Raw(s.Body)
+            </section>
+        }
+
+        <!-- Sayfa sonu notu -->
+        @if (!string.IsNullOrWhiteSpace(Model.Footnote))
+        {
+            <p style="text-align:center; color:#888; font-size:13px; margin-top:8px;">@Model.Footnote</p>
+        }
+
+    </div>
+</div>

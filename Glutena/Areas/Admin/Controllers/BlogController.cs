@@ -3,8 +3,6 @@ using Glutena.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-
 
 namespace Glutena.Areas.Admin.Controllers
 {
@@ -29,6 +27,7 @@ namespace Glutena.Areas.Admin.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(Blog blog, IFormFile? photoFile)
         {
@@ -51,10 +50,36 @@ namespace Glutena.Areas.Admin.Controllers
             return View(blog);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(Blog blog, IFormFile? photoFile)
+        // 1. Aşama: Düzenleme sayfasını aç (EKSİK OLAN KISIM BUYDU)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (photoFile != null)
+            var blog = await _context.Blogs.FindAsync(id);
+            if (blog == null) return NotFound();
+            return View(blog);
+        }
+
+        // 2. Aşama: Değişiklikleri kaydet
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, Blog blog, IFormFile? photoFile)
+        {
+            // Veritabanındaki asıl kaydı bul
+            var existing = await _context.Blogs.FindAsync(id);
+            if (existing == null) return NotFound();
+
+            if (!ModelState.IsValid)
+            {
+                blog.PhotoPath = existing.PhotoPath;
+                return View(blog);
+            }
+
+            // Sadece formdaki alanları güncelle (resim ve oluşturulma tarihi korunur)
+            existing.BlogName = blog.BlogName;
+            existing.Content = blog.Content;
+            existing.IsActive = blog.IsActive;
+            existing.UpdatedDate = DateTime.Now;
+
+            // Yeni resim seçildiyse onu kaydet, seçilmediyse eskisi kalır
+            if (photoFile != null && photoFile.Length > 0)
             {
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(photoFile.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName);
@@ -62,16 +87,13 @@ namespace Glutena.Areas.Admin.Controllers
                 {
                     await photoFile.CopyToAsync(stream);
                 }
-                blog.PhotoPath = "/img/" + fileName;
+                existing.PhotoPath = "/img/" + fileName;
             }
-            if (ModelState.IsValid)
-            {
-                _context.Blogs.Update(blog);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return View(blog);
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
+
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {

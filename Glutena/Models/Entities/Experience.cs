@@ -6,8 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Glutena.Models.Entities
 {
-    public class Experience : BaseEntity   
-        //her ürün için özel, detaylı deneyimler
+    public class Experience : BaseEntity
+    //her ürün için özel, detaylı deneyimler
     {
 
         [DisplayName("Başlık")]
@@ -29,6 +29,14 @@ namespace Glutena.Models.Entities
 
         [DisplayName("Aktif/Pasif")]
         public bool IsActive { get; set; } = true;
+
+        // Glutena (admin) yanıtı
+        [DisplayName("Glutena Yanıtı")]
+        [StringLength(1000, ErrorMessage = "Yanıt en fazla 1000 karakter olabilir.")]
+        public string? AdminReply { get; set; }
+
+        [DisplayName("Yanıt Tarihi")]
+        public DateTime? AdminReplyDate { get; set; }
 
         // İlişkiler
         [DisplayName("Ürün")]

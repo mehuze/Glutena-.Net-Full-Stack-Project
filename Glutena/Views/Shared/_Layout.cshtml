@@ -125,6 +125,7 @@
                             <a asp-controller="Feature" asp-action="Index" class="dropdown-item">Platform Özellikleri</a>
                             <a asp-controller="Home" asp-action="Test" class="dropdown-item">Gluten Testi</a>
                             <a asp-controller="Home" asp-action="Colyak" class="dropdown-item">Çölyak Hastalığı</a>
+                            <a asp-controller="Page" asp-action="Detail" asp-route-slug="yeni-tani" class="dropdown-item">🌱 Yeni Tanı Rehberi</a>
 
                            
                         </div>
@@ -142,18 +143,26 @@
                                 Admin Panel
                             </a>
                             <div class="dropdown-menu m-0">
+                                <a href="/Admin/Dashboard" class="dropdown-item fw-bold">📊 Özet</a>
+                                <div class="dropdown-divider"></div>
                                 <a href="/Admin/Blog/Index" class="dropdown-item">Blog Yönetimi</a>
+                                <a href="/Admin/ContentPage" class="dropdown-item">Sayfa Yönetimi</a>
                                 <a href="/Admin/Product/Index" class="dropdown-item">Ürün Yönetimi</a>
                                 <a href="/Admin/Brand/Index" class="dropdown-item">Marka Yönetimi</a>
                                 <a href="/Admin/Category/Index" class="dropdown-item">Kategoriler</a>
                                 <a href="/Admin/Experience" class="dropdown-item">Deneyim Yönetimi</a>
                                 <a href="/Admin/Blacklist" class="dropdown-item">Kara Liste</a>
+                                <a href="/Admin/User" class="dropdown-item">Kullanıcılar</a>
+                                <a href="/Admin/Message" class="dropdown-item">Mesajlar</a>
                             </div>
                         </div>
                     }
 
                     @if (SignInManager.IsSignedIn(User))
                     {
+                        <a asp-area="" asp-controller="Profile" asp-action="Index" class="nav-item nav-link fw-bold fs-5" style="color:#2d6a4f;">
+                            👤 @User.Identity?.Name?.Split('@')[0]
+                        </a>
                         <form method="post" action="/Account/Logout" style="display:inline;">
                             <button type="submit" class="nav-item nav-link fw-bold fs-5 text-danger" style="background:none; border:none; cursor:pointer;">
                                 Çıkış
@@ -187,42 +196,72 @@
                             <text x="41" y="38" font-family="Arial, sans-serif" font-size="7" fill="#95d5b2" letter-spacing="2">GLUTENSIZ REHBER</text>
                         </svg>
                     </a>
-                    <p style="color:#999;">Türkiye'nin Glutensiz Ürün Rehberi</p>
+                    <p style="color:#999;">
+                        Çölyak hastaları ve gluten hassasiyeti olanlar için glutensiz ürün rehberi.
+                    </p>
                 </div>
 
                 <div class="col-lg-4">
                     <h4 class="text-light mb-4">Hızlı Linkler</h4>
-                    <a class="btn btn-link"
-                       asp-controller="Home"
-                       asp-action="Index">ANA SAYFA</a>
-                    <a class="btn btn-link"
-                       asp-controller="Product"
-                       asp-action="Index">ÜRÜNLER</a>
+                    <a class="btn btn-link" asp-area="" asp-controller="Home" asp-action="Index">Anasayfa</a>
+                    <a class="btn btn-link" asp-area="" asp-controller="Product" asp-action="Index">Ürünler</a>
+                    <a class="btn btn-link" asp-area="" asp-controller="Blog" asp-action="Index">Blog</a>
+                    <a class="btn btn-link" asp-area="" asp-controller="Home" asp-action="Test">Gluten Testi</a>
+                    <a class="btn btn-link" asp-area="" asp-controller="Home" asp-action="Contact">İletişim</a>
                 </div>
 
                 <div class="col-lg-4">
-                    <h4 class="text-light mb-4">İLETİŞİM</h4>
-                    <a asp-controller="Home" asp-action="Contact" style="color:#999; text-decoration:none;">info@glutena.com</a>
+                    <h4 class="text-light mb-4">İletişim</h4>
+                    <p style="margin-bottom:12px;">
+                        <i class="fa fa-envelope me-2" style="color:#95d5b2;"></i>
+                        <a href="mailto:glutena.iletisim@gmail.com" style="color:#ccc; text-decoration:none;">glutena.iletisim@gmail.com</a>
+                    </p>
+                    <p style="margin-bottom:20px;">
+                        <i class="fab fa-instagram me-2" style="color:#95d5b2;"></i>
+                        <a href="https://instagram.com/glutena" target="_blank" rel="noopener" style="color:#ccc; text-decoration:none;">@@glutena</a>
+                    </p>
+                    <a asp-area="" asp-controller="Home" asp-action="Contact"
+                       style="display:inline-block; border:1px solid #95d5b2; color:#95d5b2; padding:8px 18px; border-radius:8px; text-decoration:none; font-size:14px;">
+                        Bize Yazın
+                    </a>
                 </div>
             </div>
         </div>
+
+        <div class="container" style="border-top:1px solid rgba(255,255,255,0.1); padding:20px 0; text-align:center;">
+            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px 22px; margin-bottom:10px;">
+                <a asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="kvkk-aydinlatma-metni"
+                   style="color:#aaa; font-size:13px; text-decoration:none;">KVKK Aydınlatma Metni</a>
+                <a asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="gizlilik-ve-cerez-politikasi"
+                   style="color:#aaa; font-size:13px; text-decoration:none;">Gizlilik ve Çerez Politikası</a>
+                <a asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="kullanim-kosullari"
+                   style="color:#aaa; font-size:13px; text-decoration:none;">Kullanım Koşulları</a>
+                <a asp-area="" asp-controller="Home" asp-action="Contact"
+                   style="color:#aaa; font-size:13px; text-decoration:none;">İletişim</a>
+            </div>
+            <small style="color:#777;">
+                © @DateTime.Now.Year Glutena. Sitedeki bilgiler bilgilendirme amaçlıdır; satın almadan önce ürün etiketini mutlaka kontrol edin.
+            </small>
+        </div>
     </div>
-    <!-- Cookie Uyarısı -->
-    <div id="cookieConsent" style="display:none; position:fixed; bottom:24px; right:24px; background:white; border-radius:16px; padding:20px 24px; box-shadow:0 10px 40px rgba(0,0,0,0.15); z-index:9999; max-width:380px; border:1px solid #eee;">
+    <!-- Çerez Bildirimi -->
+    <div id="cookieNotice" role="region" aria-label="Çerez bildirimi"
+         style="display:none; position:fixed; bottom:20px; right:20px; left:20px; margin-left:auto; background:white; border-radius:16px; padding:18px 20px; box-shadow:0 10px 40px rgba(0,0,0,0.15); z-index:9999; max-width:420px; border:1px solid #eee;">
         <div style="display:flex; align-items:flex-start; gap:12px;">
-            <span style="font-size:28px;">🍪</span>
+            <span style="font-size:26px;" aria-hidden="true">🍪</span>
             <div>
-                <h6 style="color:#1b4332; font-weight:700; margin-bottom:6px;">Çerez Politikası</h6>
-                <p style="color:#666; font-size:13px; margin-bottom:14px; line-height:1.6;">
-                    Daha iyi bir deneyim için çerez kullanıyoruz. Siteyi kullanmaya devam ederek kabul etmiş olursunuz.
+                <p style="color:#555; font-size:13px; margin-bottom:12px; line-height:1.6;">
+                    Sitemizde çerezler kullanılır.
+                    <a asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="gizlilik-ve-cerez-politikasi"
+                       style="color:#2d6a4f; font-weight:600;">Detaylı bilgi</a>
                 </p>
-                <div style="display:flex; gap:8px;">
-                    <button onclick="acceptCookie()"
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <button type="button" onclick="setCookieChoice('all')"
                             style="background:#1b4332; color:white; padding:8px 18px; border-radius:8px; border:none; font-weight:600; font-size:13px; cursor:pointer;">
-                        Kabul Et
+                        Kabul et
                     </button>
-                    <button onclick="declineCookie()"
-                            style="background:#f0f0f0; color:#555; padding:8px 18px; border-radius:8px; border:none; font-size:13px; cursor:pointer;">
+                    <button type="button" onclick="setCookieChoice('essential')"
+                            style="background:#f0f0f0; color:#333; padding:8px 18px; border-radius:8px; border:none; font-weight:600; font-size:13px; cursor:pointer;">
                         Reddet
                     </button>
                 </div>
@@ -231,18 +270,21 @@
     </div>
 
     <script>
-        if (!localStorage.getItem('cookieDecision')) {
-            document.getElementById('cookieConsent').style.display = 'block';
-        }
+        (function () {
+            try {
+                if (!localStorage.getItem('cookieChoice')) {
+                    document.getElementById('cookieNotice').style.display = 'block';
+                }
+            } catch (e) {
+                document.getElementById('cookieNotice').style.display = 'block';
+            }
+        })();
 
-        function acceptCookie() {
-            localStorage.setItem('cookieDecision', 'accepted');
-            document.getElementById('cookieConsent').style.display = 'none';
-        }
-
-        function declineCookie() {
-            localStorage.setItem('cookieDecision', 'declined');
-            document.getElementById('cookieConsent').style.display = 'none';
+        // 'all' = tüm çerezler, 'essential' = sadece zorunlu çerezler
+        // İleride analiz aracı eklenirse sadece 'all' seçenlerde çalıştırılacak.
+        function setCookieChoice(choice) {
+            try { localStorage.setItem('cookieChoice', choice); } catch (e) { }
+            document.getElementById('cookieNotice').style.display = 'none';
         }
     </script>
     <!-- Scripts -->

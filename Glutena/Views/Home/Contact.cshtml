@@ -1,5 +1,9 @@
 ﻿@{
     ViewData["Title"] = "İletişim";
+
+    // ---- İletişim bilgileri: sadece buradan değiştir ----
+    var email = "glutena.iletisim@gmail.com";
+    var instagram = "glutena";   // Başında @ olmadan yaz
 }
 
 <style>
@@ -8,6 +12,42 @@
         padding: 60px 0;
         text-align: center;
     }
+
+    .contact-card {
+        background: white;
+        border-radius: 14px;
+        padding: 30px;
+        border: 1px solid #eee;
+    }
+
+    .contact-icon {
+        background: #e9f5ee;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: #1b4332;
+    }
+
+    .contact-row {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+    }
+
+        .contact-row a {
+            color: #2d6a4f;
+            text-decoration: none;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+            .contact-row a:hover {
+                text-decoration: underline;
+            }
 </style>
 
 <!-- Header -->
@@ -19,54 +59,54 @@
     </p>
 </div>
 
-<!-- İletişim -->
 <div class="container py-5">
     <div class="row g-4 justify-content-center">
 
         <!-- Sol: Bilgiler -->
         <div class="col-lg-4">
-            <div style="background:white; border-radius:14px; padding:30px; border:1px solid #eee; height:100%;">
-                <h4 style="color:#1b4332; font-weight:700; margin-bottom:24px;">İletişim Bilgileri</h4>
+            <div class="contact-card mb-4">
+                <h4 style="color:#1b4332; font-weight:700; margin-bottom:8px;">Bize Ulaşın</h4>
+                <p style="color:#666; font-size:15px; margin-bottom:24px;">
+                    Soru, öneri ya da yanlış bulduğunuz bir ürün bilgisi için bize yazın.
+                    Genellikle 2 iş günü içinde dönüş yapıyoruz.
+                </p>
 
-                <div style="display:flex; gap:14px; margin-bottom:20px;">
-                    <div style="background:#e9f5ee; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                        <i class="fa fa-envelope" style="color:#1b4332;"></i>
-                    </div>
+                <div class="contact-row" style="margin-bottom:18px;">
+                    <div class="contact-icon"><i class="fa fa-envelope"></i></div>
                     <div>
                         <p style="font-weight:600; margin:0; color:#222;">E-posta</p>
-                        <a href="mailto:info@glutena.com" style="color:#888; text-decoration:none;">info@glutena.com</a>
+                        <a href="mailto:@email">@email</a>
                     </div>
                 </div>
 
-                
+                @if (!string.IsNullOrWhiteSpace(instagram))
+                {
+                    <div class="contact-row">
+                        <div class="contact-icon"><i class="fab fa-instagram"></i></div>
+                        <div>
+                            <p style="font-weight:600; margin:0; color:#222;">Instagram</p>
+                            <a href="https://instagram.com/@instagram" target="_blank" rel="noopener">@("@" + instagram)</a>
+                        </div>
+                    </div>
+                }
+            </div>
 
-                <!-- Sosyal Medya -->
-                <h5 style="color:#1b4332; font-weight:700; margin-top:24px; margin-bottom:16px;">Sosyal Medya</h5>
-
-                <div style="display:flex; gap:12px;">
-                    <a href="https://instagram.com/glutena" target="_blank"
-                       style="background:#e9f5ee; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; transition:background 0.2s;"
-                       onmouseover="this.style.background='#1b4332'" onmouseout="this.style.background='#e9f5ee'">
-                        <i class="fab fa-instagram" style="color:#1b4332; font-size:18px;"></i>
-                    </a>
-                    <a href="https://twitter.com/glutena" target="_blank"
-                       style="background:#e9f5ee; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; transition:background 0.2s;"
-                       onmouseover="this.style.background='#1b4332'" onmouseout="this.style.background='#e9f5ee'">
-                        <i class="fab fa-twitter" style="color:#1b4332; font-size:18px;"></i>
-                    </a>
-                    <a href="https://facebook.com/glutena" target="_blank"
-                       style="background:#e9f5ee; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; transition:background 0.2s;"
-                       onmouseover="this.style.background='#1b4332'" onmouseout="this.style.background='#e9f5ee'">
-                        <i class="fab fa-facebook" style="color:#1b4332; font-size:18px;"></i>
-                    </a>
-                   
-                </div>
+            <!-- Marka işbirlikleri -->
+            <div class="contact-card" style="background:#f3faf6; border-color:#d8f3dc;">
+                <h5 style="color:#1b4332; font-weight:700; margin-bottom:10px;">Marka İşbirlikleri</h5>
+                <p style="color:#555; font-size:14px; margin-bottom:12px;">
+                    Glutensiz ürünlerinizi Glutena'da tanıtmak, ürün sayfanızı öne çıkarmak
+                    ya da işbirliği yapmak için formda <strong>"Marka işbirliği"</strong> konusunu seçerek bize yazın.
+                </p>
+                <p style="color:#888; font-size:13px; margin:0;">
+                    Sitede yer alan tüm ürünlerin gluten bilgileri, sponsorlu olsun ya da olmasın, aynı titizlikle kontrol edilir.
+                </p>
             </div>
         </div>
 
         <!-- Sağ: Form -->
         <div class="col-lg-6">
-            <div style="background:white; border-radius:14px; padding:30px; border:1px solid #eee;">
+            <div class="contact-card">
                 <h4 style="color:#1b4332; font-weight:700; margin-bottom:24px;">Bize Yazın</h4>
 
                 @if (TempData["Success"] != null)
@@ -76,30 +116,34 @@
                     </div>
                 }
 
-                <form>
+                <form asp-controller="Home" asp-action="Contact" method="post">
                     <div class="mb-3">
-                        <label style="font-weight:600; color:#444;">Adınız</label>
-                        <input type="text" class="form-control" placeholder="Adınızı girin" />
+                        <label for="Name" style="font-weight:600; color:#444;">Adınız</label>
+                        <input type="text" id="Name" name="Name" class="form-control" placeholder="Adınızı girin" required maxlength="100" />
                     </div>
                     <div class="mb-3">
-                        <label style="font-weight:600; color:#444;">E-posta</label>
-                        <input type="email" class="form-control" placeholder="E-posta adresiniz" />
+                        <label for="Email" style="font-weight:600; color:#444;">E-posta</label>
+                        <input type="email" id="Email" name="Email" class="form-control" placeholder="Size dönüş yapacağımız adres" required maxlength="150" />
                     </div>
                     <div class="mb-3">
-                        <label style="font-weight:600; color:#444;">Mesajınız</label>
-                        <textarea class="form-control" rows="5" placeholder="Mesajınızı yazın..."></textarea>
+                        <label for="Subject" style="font-weight:600; color:#444;">Konu</label>
+                        <select id="Subject" name="Subject" class="form-select" required>
+                            <option value="Genel soru">Genel soru</option>
+                            <option value="Ürün önerisi">Ürün önerisi</option>
+                            <option value="Hatalı bilgi bildirimi">Hatalı ürün bilgisi bildirimi</option>
+                            <option value="Marka işbirliği">Marka işbirliği</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Message" style="font-weight:600; color:#444;">Mesajınız</label>
+                        <textarea id="Message" name="Message" class="form-control" rows="5" placeholder="Mesajınızı yazın..." required maxlength="2000"></textarea>
                     </div>
                     <button type="submit" style="background:#1b4332; color:white; padding:12px 28px; border-radius:8px; border:none; font-weight:600; width:100%;">
                         Gönder
                     </button>
-                    <small style="color:#aaa; display:block; margin-top:8px; text-align:center;">
-                        📧 Domain alındıktan sonra mesajlar e-postanıza iletilecektir.
-                    </small>
                 </form>
             </div>
         </div>
 
     </div>
-
-   
 </div>

@@ -34,10 +34,10 @@ namespace Glutena.Controllers
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByEmailAsync(email);
-                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+                var isAdmin = user != null && await _userManager.IsInRoleAsync(user, "Admin");
 
                 if (isAdmin)
-                    return RedirectToAction("Index", "Product", new { area = "Admin" });
+                    return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
                 else
                     return RedirectToAction("Index", "Home");
             }
@@ -51,11 +51,18 @@ namespace Glutena.Controllers
         {
             return View();
         }
-        // Çıkış
+
         // POST: /Account/Register
         [HttpPost]
-        public async Task<IActionResult> Register(string email, string password, string confirmPassword)
+        public async Task<IActionResult> Register(string email, string password, string confirmPassword, bool kvkkRead = false)
         {
+            // KVKK Aydınlatma Metni okundu mu?
+            if (!kvkkRead)
+            {
+                ViewBag.Error = "Kayıt olmak için KVKK Aydınlatma Metni'ni okuduğunuzu işaretlemelisiniz.";
+                return View();
+            }
+
             if (password != confirmPassword)
             {
                 ViewBag.Error = "Şifreler eşleşmiyor!";
@@ -72,12 +79,14 @@ namespace Glutena.Controllers
 
                 await _userManager.AddToRoleAsync(user, "User");
                 await _signInManager.SignInAsync(user, false);
+                TempData["Welcome"] = "Hoş geldin! Hesabın başarıyla oluşturuldu.";
                 return RedirectToAction("Index", "Home");
             }
 
             ViewBag.Error = string.Join(", ", result.Errors.Select(e => e.Description));
             return View();
         }
+
         // Çıkış
         [HttpPost]
         [HttpGet]

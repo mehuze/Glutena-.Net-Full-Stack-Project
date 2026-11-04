@@ -1,0 +1,78 @@
+﻿@model List<Glutena.Models.Entities.ContentPage>
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <h3 class="m-0">📄 Sayfa Yönetimi</h3>
+    <a asp-area="Admin" asp-controller="ContentPage" asp-action="Create" class="btn btn-success">+ Yeni Sayfa</a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">✅ @TempData["Success"]</div>
+}
+
+<p class="text-muted">
+    Rehber, bilgilendirme ve politika sayfalarını buradan yönetebilirsiniz.
+    Her sayfa sitede <code>/sayfa/adres</code> şeklinde açılır.
+</p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-secondary">Henüz sayfa yok. "+ Yeni Sayfa" ile ilk sayfanızı oluşturun.</div>
+}
+else
+{
+    <table class="table table-bordered table-hover bg-white align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Sayfa</th>
+                <th>Adres</th>
+                <th>Bölüm</th>
+                <th>Durum</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <strong>@item.Icon @item.Title</strong>
+                    </td>
+                    <td>
+                        <code>/sayfa/@item.Slug</code>
+                    </td>
+                    <td>
+                        @item.Sections.Count(s => s.IsActive) yayında
+                        @if (item.Sections.Any(s => !s.IsActive))
+                        {
+                            <span class="text-muted">/ @item.Sections.Count(s => !s.IsActive) gizli</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="badge bg-success">Yayında</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Gizli</span>
+                        }
+                    </td>
+                    <td>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a asp-area="Admin" asp-controller="ContentPage" asp-action="Edit" asp-route-id="@item.Id"
+                               class="btn btn-sm btn-warning">Düzenle</a>
+
+                            <a href="/sayfa/@item.Slug" target="_blank" class="btn btn-sm btn-outline-secondary">Sitede gör ↗</a>
+
+                            <form asp-area="Admin" asp-controller="ContentPage" asp-action="Delete" asp-route-id="@item.Id" method="post"
+                                  onsubmit="return confirm('Bu sayfa ve tüm bölümleri silinecek. Emin misiniz?')">
+                                <button type="submit" class="btn btn-sm btn-danger">Sil</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

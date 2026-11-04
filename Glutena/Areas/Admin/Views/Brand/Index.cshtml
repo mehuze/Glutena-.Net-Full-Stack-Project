@@ -5,6 +5,12 @@
     <a asp-area="Admin" asp-controller="Brand" asp-action="Create" class="btn btn-success">+ Yeni Marka</a>
 </div>
 
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">⚠️ @TempData["Error"]</div>
+}
+
+
 <table class="table table-bordered table-hover bg-white">
     <thead class="table-dark">
         <tr>

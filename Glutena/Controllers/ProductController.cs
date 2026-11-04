@@ -64,7 +64,7 @@ namespace Glutena.Controllers
         {
             var product = await _context.Products
                 .Include(p => p.Brand)
-                .Include(p => p.Experiences)
+             .Include(p => p.Experiences.Where(e => e.IsApproved && e.IsActive))
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null)

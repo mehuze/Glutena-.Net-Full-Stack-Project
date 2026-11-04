@@ -1,0 +1,160 @@
+﻿@model Glutena.Models.Entities.ContentPage
+@{
+    bool isNew = Model.Id == 0;
+    var sections = Model.Sections.OrderBy(s => s.Order).ToList();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <div>
+        <a asp-area="Admin" asp-controller="ContentPage" asp-action="Index" class="text-decoration-none">← Sayfa Yönetimi</a>
+        <h3 class="m-0 mt-1">@(isNew ? "Yeni Sayfa" : $"{Model.Icon} {Model.Title}")</h3>
+    </div>
+    @if (!isNew)
+    {
+        <a href="/sayfa/@Model.Slug" target="_blank" class="btn btn-outline-secondary">Sitede gör ↗</a>
+    }
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">✅ @TempData["Success"]</div>
+}
+
+<!-- ============ SAYFA BİLGİLERİ ============ -->
+<div class="card mb-4">
+    <div class="card-header bg-white fw-bold">Sayfa bilgileri</div>
+    <div class="card-body">
+        <form asp-area="Admin" asp-controller="ContentPage" asp-action="@(isNew ? "Create" : "Edit")"
+              asp-route-id="@(isNew ? null : Model.Id)" method="post">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <label asp-for="Icon" class="form-label fw-semibold"></label>
+                    <input asp-for="Icon" class="form-control" placeholder="🌱" maxlength="10" />
+                </div>
+                <div class="col-md-10">
+                    <label asp-for="Title" class="form-label fw-semibold"></label>
+                    <input asp-for="Title" class="form-control" placeholder="Yeni Tanı Rehberi" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Slug" class="form-label fw-semibold"></label>
+                    <div class="input-group">
+                        <span class="input-group-text">/sayfa/</span>
+                        <input asp-for="Slug" class="form-control" placeholder="yeni-tani" />
+                    </div>
+                    <div class="form-text">Sadece küçük harf, rakam ve tire. Değiştirirseniz bu sayfaya verilmiş eski linkler çalışmaz.</div>
+                    <span asp-validation-for="Slug" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Subtitle" class="form-label fw-semibold"></label>
+                    <input asp-for="Subtitle" class="form-control" placeholder="Başlığın altında görünen kısa açıklama" />
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Intro" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Intro" class="form-control rich-editor" rows="6"></textarea>
+                    <div class="form-text">Bölümlerden önce, sayfanın en üstünde görünen tanıtım metni.</div>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Footnote" class="form-label fw-semibold"></label>
+                    <input asp-for="Footnote" class="form-control" placeholder="Örn: Bu bilgiler doktor tavsiyesinin yerini tutmaz." />
+                </div>
+
+                <div class="col-12">
+                    <div class="form-check">
+                        <input asp-for="IsActive" class="form-check-input" />
+                        <label asp-for="IsActive" class="form-check-label">Yayında (işaretli değilse ziyaretçiler göremez)</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success mt-3">
+                @(isNew ? "Sayfayı Oluştur" : "Sayfa Bilgilerini Kaydet")
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- ============ BÖLÜMLER ============ -->
+@if (!isNew)
+{
+    <div class="card">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <span class="fw-bold">Bölümler (@sections.Count)</span>
+            <a asp-area="Admin" asp-controller="ContentPage" asp-action="SectionCreate" asp-route-pageId="@Model.Id"
+               class="btn btn-sm btn-success">+ Yeni Bölüm</a>
+        </div>
+
+        @if (!sections.Any())
+        {
+            <div class="card-body text-muted">Bu sayfada henüz bölüm yok.</div>
+        }
+        else
+        {
+            <ul class="list-group list-group-flush">
+                @for (int i = 0; i < sections.Count; i++)
+                {
+                    var s = sections[i];
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2 @(s.IsActive ? "" : "bg-light")">
+                        <div>
+                            <span class="badge bg-secondary me-2">@(i + 1)</span>
+                            <strong class="@(s.IsActive ? "" : "text-muted")">@s.Icon @s.Title</strong>
+                            @if (!s.IsActive)
+                            {
+                                <span class="badge bg-warning text-dark ms-2">Gizli</span>
+                            }
+                        </div>
+
+                        <div class="d-flex gap-1 flex-wrap">
+                            <form asp-area="Admin" asp-controller="ContentPage" asp-action="SectionMove" method="post">
+                                <input type="hidden" name="id" value="@s.Id" />
+                                <input type="hidden" name="direction" value="-1" />
+                                <button type="submit" class="btn btn-sm btn-outline-secondary" title="Yukarı taşı" @(i == 0 ? "disabled" : "")>▲</button>
+                            </form>
+                            <form asp-area="Admin" asp-controller="ContentPage" asp-action="SectionMove" method="post">
+                                <input type="hidden" name="id" value="@s.Id" />
+                                <input type="hidden" name="direction" value="1" />
+                                <button type="submit" class="btn btn-sm btn-outline-secondary" title="Aşağı taşı" @(i == sections.Count - 1 ? "disabled" : "")>▼</button>
+                            </form>
+
+                            <a asp-area="Admin" asp-controller="ContentPage" asp-action="SectionEdit" asp-route-id="@s.Id"
+                               class="btn btn-sm btn-warning">Düzenle</a>
+
+                            <form asp-area="Admin" asp-controller="ContentPage" asp-action="SectionToggle" asp-route-id="@s.Id" method="post">
+                                <button type="submit" class="btn btn-sm btn-outline-dark">@(s.IsActive ? "Gizle" : "Yayınla")</button>
+                            </form>
+
+                            <form asp-area="Admin" asp-controller="ContentPage" asp-action="SectionDelete" asp-route-id="@s.Id" method="post"
+                                  onsubmit="return confirm('Bu bölüm silinecek. Emin misiniz?')">
+                                <button type="submit" class="btn btn-sm btn-danger">Sil</button>
+                            </form>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+}
+
+<!-- Metin düzenleyici -->
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: 'textarea.rich-editor',
+        language: 'tr',
+        language_url: 'https://cdn.jsdelivr.net/npm/tinymce-i18n@26.9.28/langs6/tr.js',
+        menubar: false,
+        branding: false,
+        promotion: false,
+        height: 260,
+        plugins: 'lists link',
+        toolbar: 'undo redo | bold italic | bullist numlist | link | removeformat',
+        content_style: 'body { font-family: sans-serif; font-size: 15px; line-height: 1.7; }'
+    });
+</script>

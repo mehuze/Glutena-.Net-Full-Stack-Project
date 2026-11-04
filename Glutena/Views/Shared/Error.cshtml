@@ -1,0 +1,31 @@
+﻿@{
+    int code = ViewBag.Code ?? 500;
+    ViewData["Title"] = code == 404 ? "Sayfa Bulunamadı" : "Bir Hata Oluştu";
+}
+
+<div style="background: linear-gradient(135deg, #1b4332, #40916c); padding: 60px 0; text-align:center;">
+    <h1 style="color:white; font-weight:700; font-size:56px; margin:0;">@code</h1>
+    <p style="color:rgba(255,255,255,0.8); font-size:18px; margin:8px 0 0;">@ViewData["Title"]</p>
+</div>
+
+<div class="container py-5 text-center">
+    @if (code == 404)
+    {
+        <p style="color:#555; font-size:18px;">Aradığınız sayfa bulunamadı ya da kaldırılmış olabilir.</p>
+    }
+    else
+    {
+        <p style="color:#555; font-size:18px;">Beklenmeyen bir hata oluştu. Lütfen biraz sonra tekrar deneyin.</p>
+    }
+
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:24px;">
+        <a asp-area="" asp-controller="Home" asp-action="Index"
+           style="background:#1b4332; color:white; padding:12px 28px; border-radius:8px; text-decoration:none; font-weight:600;">
+            Anasayfaya Dön
+        </a>
+        <a asp-area="" asp-controller="Product" asp-action="Index"
+           style="border:2px solid #1b4332; color:#1b4332; padding:10px 26px; border-radius:8px; text-decoration:none; font-weight:600;">
+            Ürünlere Göz At
+        </a>
+    </div>
+</div>

@@ -3,52 +3,346 @@
 }
 
 <!-- Hero Start -->
-<div style="position:relative; background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 50%, #40916c 100%); min-height:480px; display:flex; align-items:center; overflow:hidden;">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6" style="padding: 60px 0; z-index:1;">
-                <div style="background:rgba(255,255,255,0.12); color:white; font-size:12px; padding:5px 14px; border-radius:20px; display:inline-block; margin-bottom:18px; letter-spacing:1px;">
+<style>
+    .gl-hero {
+        position: relative;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        background: #1b4332;
+    }
+
+    .gl-hero-photo {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 55%;
+        background: url('/img/hero.jpg') center / cover no-repeat;
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 30%);
+        mask-image: linear-gradient(to right, transparent 0%, #000 30%);
+    }
+
+    .gl-hero .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    .gl-hero-content {
+        padding: 36px 0;
+    }
+
+    .gl-hero-inner {
+        padding-left: clamp(24px, 6vw, 140px);
+        padding-right: clamp(24px, 6vw, 140px);
+    }
+
+    .gl-hero h1 {
+        font-size: 34px;
+        font-weight: 700;
+        color: white;
+        line-height: 1.2;
+        margin-bottom: 10px;
+    }
+
+    .gl-trust {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+    }
+
+        .gl-trust li {
+            color: #d8f3dc;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+            .gl-trust li::before {
+                content: "✓";
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                background: #95d5b2;
+                color: #1b4332;
+                font-size: 11px;
+                font-weight: 700;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+    @@media (max-width: 991px) {
+        .gl-hero-photo {
+            width: 100%;
+            opacity: 0.2;
+            -webkit-mask-image: none;
+            mask-image: none;
+        }
+
+        .gl-hero h1 {
+            font-size: 28px;
+        }
+    }
+</style>
+
+<div class="gl-hero">
+    <div class="gl-hero-photo" role="img"
+         aria-label="Unla yazılmış gluten free yazısı ve etrafında glutensiz makarnalar"></div>
+
+    <div class="container-fluid gl-hero-inner">
+        <div class="row">
+            <div class="col-lg-6 gl-hero-content">
+                <div style="background:rgba(255,255,255,0.12); color:white; font-size:11px; padding:4px 12px; border-radius:20px; display:inline-block; margin-bottom:12px; letter-spacing:1px;">
                     🌿 TÜRKİYE'NİN GLUTENSIZ REHBERİ
                 </div>
-                <h1 style="font-size:42px; font-weight:700; color:white; line-height:1.2; margin-bottom:14px;">
+                <h1>
                     Glutensiz Ürünleri <br>
                     <span style="color:#95d5b2;">Keşfedin & Güvenle</span> Tüketin
                 </h1>
-                <p style="color:rgba(255,255,255,0.75); font-size:16px; margin-bottom:28px;">
-                    Binlerce glutensiz ürünü inceleyin, kullanıcı deneyimlerini okuyun ve sağlıklı yaşamınızı destekleyin.
+                <p style="color:rgba(255,255,255,0.8); font-size:15px; margin-bottom:20px; max-width:30em;">
+                    Glutensiz ürünleri inceleyin, çölyak hastalarının deneyimlerini okuyun
+                    ve markete gitmeden önce güvenle karar verin.
                 </p>
-                <div style="display:flex; gap:14px; flex-wrap:wrap;">
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
                     <a asp-controller="Product" asp-action="Index"
-                       style="background:white; color:#1b4332; padding:12px 28px; border-radius:8px; font-weight:700; font-size:15px; text-decoration:none;">
+                       style="background:white; color:#1b4332; padding:10px 24px; border-radius:8px; font-weight:700; font-size:14px; text-decoration:none;">
                         Ürünleri Gör
                     </a>
                     <a asp-controller="Blog" asp-action="Index"
-                       style="border:2px solid rgba(255,255,255,0.5); color:white; padding:12px 28px; border-radius:8px; font-size:15px; text-decoration:none;">
+                       style="border:2px solid rgba(255,255,255,0.5); color:white; padding:10px 24px; border-radius:8px; font-size:14px; text-decoration:none;">
                         Blog Yazıları
                     </a>
                 </div>
-            </div>
-            <div class="col-lg-6 text-center mt-4 mt-lg-0">
-                <img src="~/img/glutena.png"
-                     class="img-fluid"
-                     style="max-height:400px; object-fit:contain; border-radius:20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);" />
+
+                <ul class="gl-trust">
+                    <li>Gluten durumu belirtilmiş ürünler</li>
+                    <li>Çapraz bulaşma uyarıları</li>
+                    <li>Gerçek kullanıcı deneyimleri</li>
+                </ul>
             </div>
         </div>
     </div>
 </div>
 <!-- Hero End -->
-<!-- Arama Bandı -->
-<div style="background:white; padding:24px 0; border-bottom:1px solid #eee; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
+<!-- Glutena Nedir -->
+<section style="padding: 48px 0 8px;">
     <div class="container">
-        <div style="max-width:600px; margin:0 auto; position:relative;">
-            <input type="text" id="heroSearch" class="form-control"
-                   placeholder="🔍 Glutensiz ürün ara... (örn: ekmek, makarna)"
-                   style="border-radius:8px; padding:12px 16px; font-size:15px; border:2px solid #e9f5ee;" />
-            <div id="searchResults" style="display:none; position:absolute; top:100%; left:0; right:0; background:white; border:1px solid #eee; border-radius:8px; box-shadow:0 10px 30px rgba(0,0,0,0.1); z-index:999; max-height:300px; overflow-y:auto;">
+        <div style="background:white; border-radius:16px; padding:32px 36px; display:flex; gap:36px; align-items:center; border:1px solid #e6efe9; flex-wrap:wrap;">
+            <svg width="240" height="72" viewBox="0 0 160 45" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;" aria-hidden="true">
+                <ellipse cx="18" cy="22" rx="12" ry="6" fill="#1b4332" transform="rotate(-45 18 22)" />
+                <ellipse cx="23" cy="17" rx="9" ry="4.5" fill="#40916c" transform="rotate(-45 23 17)" />
+                <line x1="12" y1="28" x2="26" y2="14" stroke="#95d5b2" stroke-width="1.2" />
+                <text x="40" y="26" font-family="Georgia, serif" font-size="20" font-weight="700" fill="#1b4332">Gluten<tspan fill="#40916c">a</tspan></text>
+                <text x="41" y="38" font-family="Arial, sans-serif" font-size="7" fill="#888" letter-spacing="2">GLUTENSIZ REHBER</text>
+            </svg>
+            <div style="flex:1; min-width:260px;">
+                <h2 style="font-size:26px; font-weight:700; color:#1b4332; margin-bottom:10px;">Glutena Nedir?</h2>
+                <p style="color:#555; font-size:15px; line-height:1.8; margin:0;">
+                    Glutena, çölyak hastaları ve gluten hassasiyeti olanlar için hazırlanmış bir rehberdir.
+                    Glutensiz ürünlerin gluten durumunu ve çapraz bulaşma bilgilerini inceleyebilir,
+                    aynı yolda yürüyen insanların deneyimlerini okuyabilir, kendi deneyimlerinizi paylaşabilirsiniz.
+                    Amacımız, markete gitmeden önce güvenle karar vermenize yardımcı olmak.
+                </p>
+                <a asp-controller="Feature" asp-action="Index"
+                   style="display:inline-block; margin-top:14px; color:#2d6a4f; font-weight:700; text-decoration:none; border-bottom:2px solid #95d5b2; padding-bottom:2px;">
+                    Platform özelliklerini keşfet →
+                </a>
             </div>
         </div>
     </div>
-</div>
+</section>
+<!-- Glutena Nedir End -->
+<!-- Nereden Başlamak İstersiniz -->
+<style>
+    .start-section {
+        padding: 56px 0 24px;
+    }
+
+    .start-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background: white;
+        border: 1px solid #e6efe9;
+        border-radius: 16px;
+        padding: 26px 22px;
+        text-decoration: none;
+        color: #222;
+        transition: transform .2s, box-shadow .2s, border-color .2s;
+    }
+
+        .start-card:hover,
+        .start-card:focus-visible {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(27, 67, 50, .12);
+            border-color: #95d5b2;
+            color: #222;
+            outline: none;
+        }
+
+    .start-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: #e9f5ee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin-bottom: 16px;
+    }
+
+    .start-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1b4332;
+        margin-bottom: 8px;
+    }
+
+    .start-text {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 18px;
+    }
+
+    .start-link {
+        margin-top: auto;
+        font-size: 14px;
+        font-weight: 700;
+        color: #2d6a4f;
+    }
+</style>
+
+<section class="start-section">
+    <div class="container-fluid" style="padding-left:6%; padding-right:6%;">
+        <div class="text-center mb-4">
+            <h2 style="font-size:28px; font-weight:700; color:#1b4332; margin-bottom:6px;">Nereden başlamak istersiniz?</h2>
+            <p style="color:#777; margin:0;">Size en uygun seçeneğe tıklayın, sizi doğru yere götürelim.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <a asp-controller="Page" asp-action="Detail" asp-route-slug="yeni-tani" class="start-card">
+                    <div class="start-icon">🌱</div>
+                    <div class="start-title">Yeni tanı aldım</div>
+                    <div class="start-text">Çölyak nedir, ilk günlerde neye dikkat etmeli? Adım adım başlangıç rehberi.</div>
+                    <div class="start-link">Rehberi oku →</div>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <a asp-controller="Product" asp-action="Index" class="start-card">
+                    <div class="start-icon">🔍</div>
+                    <div class="start-title">Ürün arıyorum</div>
+                    <div class="start-text">Gluten durumu belirtilmiş ürünleri inceleyin, markete gitmeden karar verin.</div>
+                    <div class="start-link">Ürünlere göz at →</div>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <a asp-controller="Home" asp-action="Test" class="start-card">
+                    <div class="start-icon">🧪</div>
+                    <div class="start-title">Bende gluten hassasiyeti var mı?</div>
+                    <div class="start-text">Belirtilerinizi değerlendiren kısa bir testle fikir edinin. Kesin tanı için doktorunuza danışın.</div>
+                    <div class="start-link">Testi başlat →</div>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a asp-controller="Experience" asp-action="Index" class="start-card">
+                        <div class="start-icon">💬</div>
+                        <div class="start-title">Deneyimimi paylaşmak istiyorum</div>
+                        <div class="start-text">Denediğiniz ürünler hakkında yorum yazın, başkalarına yol gösterin.</div>
+                        <div class="start-link">Deneyimlere git →</div>
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Register" class="start-card">
+                        <div class="start-icon">💬</div>
+                        <div class="start-title">Deneyimimi paylaşmak istiyorum</div>
+                        <div class="start-text">Ücretsiz üye olun, denediğiniz ürünler hakkında yorum yazın, başkalarına yol gösterin.</div>
+                        <div class="start-link">Ücretsiz üye ol →</div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Nereden Başlamak İstersiniz End -->
+<!-- Ürünleri Keşfet (Arama + Kategoriler) -->
+<section style="padding: 40px 0 48px;">
+    <div class="container-fluid" style="padding-left:6%; padding-right:6%;">
+        <div class="text-center mb-4">
+            <h2 style="font-size:28px; font-weight:700; color:#1b4332; margin-bottom:6px;">Ürünleri keşfedin</h2>
+            <p style="color:#777; margin:0;">Ürün ya da marka adıyla arayın.</p>
+        </div>
+
+        <!-- Arama kutusu -->
+        <div style="max-width:620px; margin:0 auto; position:relative;">
+            <input type="text" id="heroSearch" class="form-control" autocomplete="off"
+                   placeholder="🔍 Glutensiz ürün ara... (örn: ekmek, makarna)"
+                   aria-label="Glutensiz ürün ara"
+                   style="border-radius:12px; padding:14px 18px; font-size:16px; border:2px solid #d8f3dc; box-shadow:0 4px 14px rgba(27,67,50,0.06);" />
+            <div id="searchResults" style="display:none; position:absolute; top:calc(100% + 6px); left:0; right:0; background:white; border:1px solid #eee; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.1); z-index:999; max-height:300px; overflow-y:auto;">
+            </div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:14px; max-width:620px; margin:28px auto 22px; color:#999; font-size:14px;">
+            <span style="flex:1; height:1px; background:#e3e9e5;"></span>
+            veya kategorilere göz atın
+            <span style="flex:1; height:1px; background:#e3e9e5;"></span>
+        </div>
+
+        <!-- Kategori kartları -->
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <a href="/Product?categoryId=3" style="text-decoration:none;">
+                    <div style="background:white; border-radius:14px; padding:28px; text-align:center; border:1px solid #eee; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="font-size:48px; margin-bottom:12px;">🍝</div>
+                        <h5 style="font-weight:700; color:#1b4332;">Makarna & Unlu Ürünler</h5>
+                        <p style="color:#888; font-size:13px;">Glutensiz makarna, un ve hamur işleri</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <a href="/Product?categoryId=4" style="text-decoration:none;">
+                    <div style="background:white; border-radius:14px; padding:28px; text-align:center; border:1px solid #eee; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="font-size:48px; margin-bottom:12px;">🍪</div>
+                        <h5 style="font-weight:700; color:#1b4332;">Atıştırmalıklar</h5>
+                        <p style="color:#888; font-size:13px;">Bisküvi, kraker ve atıştırmalık ürünler</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <a href="/Product?categoryId=5" style="text-decoration:none;">
+                    <div style="background:white; border-radius:14px; padding:28px; text-align:center; border:1px solid #eee; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="font-size:48px; margin-bottom:12px;">🥣</div>
+                        <h5 style="font-weight:700; color:#1b4332;">Kahvaltılık</h5>
+                        <p style="color:#888; font-size:13px;">Yulaf, müsli ve kahvaltılık ürünler</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <a href="/Product?categoryId=6" style="text-decoration:none;">
+                    <div style="background:white; border-radius:14px; padding:28px; text-align:center; border:1px solid #eee; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="font-size:48px; margin-bottom:12px;">🍰</div>
+                        <h5 style="font-weight:700; color:#1b4332;">Tatlı & Karışımlar</h5>
+                        <p style="color:#888; font-size:13px;">Kek karışımı, çikolata ve tatlılar</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 
 <script>
     const heroSearch = document.getElementById('heroSearch');
@@ -57,14 +351,14 @@
     const allProducts = [
         @foreach (var item in ViewBag.Products)
         {
-                <text>
-                {
-                    id: @item.Id,
-                    name: "@item.ProductName",
-                    price: "@item.Price",
-                    photo: "@item.PhotoPath"
-                },
-                </text>
+                        <text>
+                        {
+                            id: @item.Id,
+                            name: "@item.ProductName",
+                            price: "@item.Price",
+                            photo: "@item.PhotoPath"
+                        },
+                        </text>
         }
     ];
 
@@ -97,74 +391,7 @@
         }
     });
 </script>
-<!-- Arama Bandı End -->
-<!-- Kategori Kartları -->
-<div class="container py-5">
-    <h2 style="font-size:26px; font-weight:700; color:#1b4332; margin-bottom:4px;">Kategoriler</h2>
-    <p style="color:#888; margin-bottom:28px;">İstediğin kategoriye göre ürünleri keşfet</p>
-    <div class="row g-4">
-        <div class="col-lg-3 col-md-6">
-            <a href="/Product?categoryId=3" style="text-decoration:none;">
-                <div style="background:white; border-radius:14px; padding:28px; text-align:center; border:1px solid #eee; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                    <div style="font-size:48px; margin-bottom:12px;">🍝</div>
-                    <h5 style="font-weight:700; color:#1b4332;">Makarna & Unlu Ürünler</h5>
-                    <p style="color:#888; font-size:13px;">Glutensiz makarna, un ve hamur işleri</p>
-                </div>
-            </a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <a href="/Product?categoryId=4" style="text-decoration:none;">
-                <div style="background:white; border-radius:14px; padding:28px; text-align:center; border:1px solid #eee; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                    <div style="font-size:48px; margin-bottom:12px;">🍪</div>
-                    <h5 style="font-weight:700; color:#1b4332;">Atıştırmalıklar</h5>
-                    <p style="color:#888; font-size:13px;">Bisküvi, kraker ve atıştırmalık ürünler</p>
-                </div>
-            </a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <a href="/Product?categoryId=5" style="text-decoration:none;">
-                <div style="background:white; border-radius:14px; padding:28px; text-align:center; border:1px solid #eee; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                    <div style="font-size:48px; margin-bottom:12px;">🥣</div>
-                    <h5 style="font-weight:700; color:#1b4332;">Kahvaltılık</h5>
-                    <p style="color:#888; font-size:13px;">Yulaf, müsli ve kahvaltılık ürünler</p>
-                </div>
-            </a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <a href="/Product?categoryId=6" style="text-decoration:none;">
-                <div style="background:white; border-radius:14px; padding:28px; text-align:center; border:1px solid #eee; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                    <div style="font-size:48px; margin-bottom:12px;">🍰</div>
-                    <h5 style="font-weight:700; color:#1b4332;">Tatlı & Karışımlar</h5>
-                    <p style="color:#888; font-size:13px;">Kek karışımı, çikolata ve tatlılar</p>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
-
-<!-- Test Bandı -->
-<div style="background: linear-gradient(135deg, #1b4332, #2d6a4f); padding: 40px 0; margin: 20px 0;">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <h3 style="color:white; font-weight:700; margin-bottom:8px;">
-                    🧪 Gluten Duyarlılığınızı Test Edin
-                </h3>
-                <p style="color:rgba(255,255,255,0.8); margin:0;">
-                    Karın şişkinliği, yorgunluk veya sindirim sorunları yaşıyor musunuz?
-                    15 soruluk testimizle gluten duyarlılığı riskinizi öğrenin.
-                </p>
-            </div>
-            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                <a asp-controller="Home" asp-action="Test"
-                   style="background:white; color:#1b4332; padding:14px 28px; border-radius:8px; text-decoration:none; font-weight:700; font-size:15px;">
-                    Testi Başlat →
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
+<!-- Ürünleri Keşfet End -->
 <!-- Öne Çıkan Ürünler -->
 <div class="container-xxl py-5">
     <div class="container">
@@ -190,29 +417,6 @@
                     </div>
                 </div>
             }
-        </div>
-    </div>
-</div>
-
-<!-- Hakkımızda -->
-<div class="container-xxl py-4">
-    <div class="container">
-        <div style="background:white; border-radius:16px; padding:40px; display:flex; gap:40px; align-items:center; border:1px solid #eee;">
-            <svg width="320" height="96" viewBox="0 0 160 45" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
-                <ellipse cx="18" cy="22" rx="12" ry="6" fill="#1b4332" transform="rotate(-45 18 22)" />
-                <ellipse cx="23" cy="17" rx="9" ry="4.5" fill="#40916c" transform="rotate(-45 23 17)" />
-                <line x1="12" y1="28" x2="26" y2="14" stroke="#95d5b2" stroke-width="1.2" />
-                <text x="40" y="26" font-family="Georgia, serif" font-size="20" font-weight="700" fill="#1b4332">Gluten<tspan fill="#40916c">a</tspan></text>
-                <text x="41" y="38" font-family="Arial, sans-serif" font-size="7" fill="#888" letter-spacing="2">GLUTENSIZ REHBER</text>
-            </svg>
-            <div>
-                <h2 style="font-size:28px; font-weight:700; color:#1b4332; margin-bottom:14px;">Glutena Nedir?</h2>
-                <p style="color:#555; font-size:15px; line-height:1.8;">
-                    Glutena, glutensiz ürünleri keşfetmenizi, kullanıcı deneyimlerini
-                    incelemenizi ve güvenli ürünleri kolayca bulmanızı sağlayan bir rehber platformudur.
-                    Türkiye'nin en kapsamlı glutensiz ürün veritabanına buradan ulaşabilirsiniz.
-                </p>
-            </div>
         </div>
     </div>
 </div>

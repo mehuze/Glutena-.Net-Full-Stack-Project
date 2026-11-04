@@ -21,29 +21,34 @@
         @foreach (var item in Model)
         {
             <div class="col-md-6">
-                <div style="background:white; border-radius:14px; padding:24px; border:1px solid #eee; height:100%;">
+                <div style="background:white; border-radius:14px; padding:24px; border:1px solid #eee; height:100%; display:flex; flex-direction:column;">
 
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                         <h5 style="font-weight:700; color:#1b4332; margin:0;">@item.Product?.ProductName</h5>
                         <div style="color:#f4a261;">
-                            @for (int i = 1; i <= 5; i++)
-                            {
-                                if (i <= item.Rating)
-                                {
-                                    <i class="fa fa-star"></i>
-                                }
-                                else
-                                {
-                                    <i class="fa fa-star-o"></i>
-                                }
-                            }
+                            @string.Concat(Enumerable.Repeat("★", item.Rating))<span style="color:#ddd;">@string.Concat(Enumerable.Repeat("★", 5 - item.Rating))</span>
                         </div>
                     </div>
 
                     <h6 style="font-weight:600; color:#222; margin-bottom:8px;">@item.Title</h6>
                     <p style="color:#555; font-size:14px; line-height:1.7;">@item.Content</p>
 
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding-top:16px; border-top:1px solid #eee;">
+                    @* Glutena yanıtı: sadece yanıt yazılmışsa görünür *@
+                    @if (!string.IsNullOrEmpty(item.AdminReply))
+                    {
+                        <div style="background:#f3faf6; border-left:3px solid #2d6a4f; border-radius:8px; padding:12px 16px; margin-bottom:4px;">
+                            <div style="font-weight:700; color:#1b4332; font-size:14px; margin-bottom:4px;">
+                                🌿 Glutena yanıtı
+                                @if (item.AdminReplyDate != null)
+                                {
+                                    <small style="color:#999; font-weight:400; margin-left:6px;">@item.AdminReplyDate.Value.ToString("dd.MM.yyyy")</small>
+                                }
+                            </div>
+                            <p style="color:#444; margin:0; font-size:14px; white-space:pre-line;">@item.AdminReply</p>
+                        </div>
+                    }
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-top:16px; border-top:1px solid #eee;">
                         <small style="color:#aaa;">
                             <i class="fa fa-calendar me-1"></i>
                             @item.CreatedDate.ToString("dd MMM yyyy")

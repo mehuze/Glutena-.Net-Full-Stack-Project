@@ -1,0 +1,93 @@
+﻿@model Glutena.Models.Entities.ContentSection
+@{
+    bool isNew = Model.Id == 0;
+}
+
+<div class="mb-3">
+    <a asp-area="Admin" asp-controller="ContentPage" asp-action="Edit" asp-route-id="@Model.ContentPageId" class="text-decoration-none">
+        ← @(ViewBag.PageTitle ?? "Sayfa")
+    </a>
+    <h3 class="m-0 mt-1">@(isNew ? "Yeni Bölüm" : "Bölümü Düzenle")</h3>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-area="Admin" asp-controller="ContentPage" asp-action="@(isNew ? "SectionCreate" : "SectionEdit")"
+              asp-route-id="@(isNew ? null : Model.Id)" method="post">
+
+            <input type="hidden" asp-for="ContentPageId" />
+            <input type="hidden" asp-for="Order" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <label asp-for="Icon" class="form-label fw-semibold"></label>
+                    <input asp-for="Icon" class="form-control" placeholder="🥗" maxlength="10" />
+                </div>
+                <div class="col-md-7">
+                    <label asp-for="Title" class="form-label fw-semibold"></label>
+                    <input asp-for="Title" class="form-control" placeholder="Bundan sonra ne yiyeceğim?" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="ShortTitle" class="form-label fw-semibold"></label>
+                    <input asp-for="ShortTitle" class="form-control" placeholder="Ne yiyeceğim?" maxlength="40" />
+                    <div class="form-text">Sayfanın üstündeki hızlı geçiş butonunda görünür.</div>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Body" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Body" class="form-control rich-editor" rows="16"></textarea>
+                    <span asp-validation-for="Body" class="text-danger small"></span>
+                    <div class="form-text">
+                        İpucu: <strong>Biçimler</strong> menüsünden alt başlık, yeşil bilgi kutusu, sarı uyarı kutusu ve buton ekleyebilirsiniz.
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-check">
+                        <input asp-for="IsActive" class="form-check-input" />
+                        <label asp-for="IsActive" class="form-check-label">Yayında (işaretli değilse sitede görünmez)</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-3">
+                <button type="submit" class="btn btn-success">@(isNew ? "Bölümü Ekle" : "Bölümü Kaydet")</button>
+                <a asp-area="Admin" asp-controller="ContentPage" asp-action="Edit" asp-route-id="@Model.ContentPageId"
+                   class="btn btn-outline-secondary">Vazgeç</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Metin düzenleyici -->
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: 'textarea.rich-editor',
+        language: 'tr',
+        language_url: 'https://cdn.jsdelivr.net/npm/tinymce-i18n@26.9.28/langs6/tr.js',
+        menubar: false,
+        branding: false,
+        promotion: false,
+        height: 520,
+        plugins: 'lists link',
+        toolbar: 'undo redo | styles | bold italic | bullist numlist | link | removeformat',
+        style_formats: [
+            { title: 'Paragraf', block: 'p' },
+            { title: 'Alt başlık', block: 'h3' },
+            { title: '🟩 Yeşil bilgi kutusu', block: 'div', classes: 'cp-note', wrapper: true },
+            { title: '🟨 Sarı uyarı kutusu', block: 'div', classes: 'cp-warn', wrapper: true },
+            { title: '🔘 Buton (bir linki seçip uygulayın)', selector: 'a', classes: 'cp-btn' }
+        ],
+        content_style: `
+            body { font-family: sans-serif; font-size: 15px; line-height: 1.7; color: #444; }
+            h3 { font-size: 17px; font-weight: 700; color: #2d6a4f; margin: 18px 0 8px; }
+            .cp-note { background: #f3faf6; border-left: 4px solid #2d6a4f; border-radius: 10px; padding: 12px 16px; margin: 14px 0; color: #1b4332; }
+            .cp-warn { background: #fff8e6; border-left: 4px solid #e0a100; border-radius: 10px; padding: 12px 16px; margin: 14px 0; color: #5c4300; }
+            .cp-btn { display: inline-block; background: #1b4332; color: white; padding: 8px 18px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+        `
+    });
+</script>

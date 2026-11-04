@@ -60,8 +60,8 @@ namespace Glutena.Controllers
             }
 
             // Giriş yapmış kullanıcının ID'sini al
-            var currentUser = await _userManager.GetUserAsync(User);
-            model.UserId = currentUser != null ? 1 : 1; // Şimdilik 1, ileride UserId string olacak
+            // Giriş yapmış kullanıcının ID'sini al (giriş yapılmamışsa boş kalır)
+            model.UserId = _userManager.GetUserId(User);
 
             model.IsApproved = false;
             model.IsActive = true;

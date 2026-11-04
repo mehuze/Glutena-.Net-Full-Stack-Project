@@ -1,31 +1,52 @@
 ﻿@model IEnumerable<Glutena.Models.Entities.Experience>
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h3>Deneyim Yönetimi</h3>
+@{
+    var pendingCount = Model.Count(e => !e.IsApproved);
+    var unansweredCount = Model.Count(e => e.IsApproved && string.IsNullOrEmpty(e.AdminReply));
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <h3>
+        Deneyim Yönetimi
+        @if (pendingCount > 0)
+        {
+            <span class="badge bg-warning text-dark ms-2" style="font-size:14px;">@pendingCount onay bekliyor</span>
+        }
+        @if (unansweredCount > 0)
+        {
+            <span class="badge bg-info text-dark ms-1" style="font-size:14px;">@unansweredCount yanıtsız</span>
+        }
+    </h3>
+    <span class="text-muted">Toplam @Model.Count() deneyim</span>
 </div>
 
-<table class="table table-bordered table-hover bg-white">
-    <thead class="table-dark">
-        <tr>
-            <th>Ürün</th>
-            <th>Başlık</th>
-            <th>Yorum</th>
-            <th>Puan</th>
-            <th>Tarih</th>
-            <th>Durum</th>
-            <th>İşlemler</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Product?.ProductName</td>
-                <td>@item.Title</td>
-                <td>@item.Content</td>
-                <td>@item.Rating / 5</td>
-                <td>@item.CreatedDate.ToString("dd.MM.yyyy")</td>
-                <td>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">✅ @TempData["Success"]</div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-secondary">Henüz deneyim yok.</div>
+}
+
+@foreach (var item in Model)
+{
+    <div class="card mb-3" style="@(item.IsApproved ? "" : "border-left:4px solid #ffc107;")">
+        <div class="card-body">
+
+            <!-- Üst satır: ürün, yazar, tarih -->
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                <div>
+                    <a asp-area="" asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId"
+                       target="_blank" style="font-weight:700; color:#1b4332; text-decoration:none;">
+                        @item.Product?.ProductName
+                    </a>
+                    <span class="text-muted ms-2" style="font-size:14px;">
+                        @(item.User?.Email ?? "Misafir / silinmiş kullanıcı")
+                    </span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
                     @if (item.IsApproved)
                     {
                         <span class="badge bg-success">Onaylı</span>
@@ -34,17 +55,46 @@
                     {
                         <span class="badge bg-warning text-dark">Bekliyor</span>
                     }
-                </td>
-                <td>
-                    @if (!item.IsApproved)
+                    <small class="text-muted">@item.CreatedDate.ToString("dd.MM.yyyy HH:mm")</small>
+                </div>
+            </div>
+
+            <!-- Yorum -->
+            <div class="d-flex justify-content-between mb-1">
+                <strong>@item.Title</strong>
+                <span style="color:#f4a261;">@string.Concat(Enumerable.Repeat("★", item.Rating))<span style="color:#ddd;">@string.Concat(Enumerable.Repeat("★", 5 - item.Rating))</span></span>
+            </div>
+            <p style="white-space:pre-line; color:#444;">@item.Content</p>
+
+            <!-- Onayla / Sil -->
+            <div class="d-flex gap-2 mb-3">
+                @if (!item.IsApproved)
+                {
+                    <a asp-area="Admin" asp-controller="Experience" asp-action="Approve" asp-route-id="@item.Id"
+                       class="btn btn-sm btn-success">Onayla</a>
+                }
+                <a asp-area="Admin" asp-controller="Experience" asp-action="Delete" asp-route-id="@item.Id"
+                   class="btn btn-sm btn-danger"
+                   onclick="return confirm('Silmek istediğinize emin misiniz?')">Sil</a>
+            </div>
+
+            <!-- Glutena yanıtı -->
+            <form asp-area="Admin" asp-controller="Experience" asp-action="Reply" asp-route-id="@item.Id" method="post"
+                  style="background:#f3faf6; border:1px solid #d8f3dc; border-radius:10px; padding:14px;">
+                <label for="reply-@item.Id" style="font-weight:600; color:#1b4332; margin-bottom:6px;">
+                    🌿 Glutena yanıtı
+                    @if (item.AdminReplyDate != null)
                     {
-                        <a asp-area="Admin" asp-controller="Experience" asp-action="Approve" asp-route-id="@item.Id"
-                           class="btn btn-sm btn-success">Onayla</a>
+                        <small class="text-muted fw-normal ms-2">Son güncelleme: @item.AdminReplyDate.Value.ToString("dd.MM.yyyy HH:mm")</small>
                     }
-                    <a asp-area="Admin" asp-controller="Experience" asp-action="Delete" asp-route-id="@item.Id"
-                       class="btn btn-sm btn-danger"
-                       onclick="return confirm('Silmek istediğinize emin misiniz?')">Sil</a>
-                </td>
-            </tr>
-        }
-    </tbody>
+                </label>
+                <textarea id="reply-@item.Id" name="adminReply" class="form-control mb-2" rows="2" maxlength="1000"
+                      placeholder="Bu deneyime yanıt yazın. Boş bırakıp kaydederseniz yanıt kaldırılır.">@item.AdminReply</textarea>
+                <button type="submit" class="btn btn-sm" style="background:#1b4332; color:white;">
+                    @(string.IsNullOrEmpty(item.AdminReply) ? "Yanıtı Kaydet" : "Yanıtı Güncelle")
+                </button>
+            </form>
+
+        </div>
+    </div>
+}

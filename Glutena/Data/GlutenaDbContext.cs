@@ -24,6 +24,9 @@ namespace Glutena.Data
         public DbSet<Experience> Experiences { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<BlacklistWord> BlacklistWords { get; set; }
+        public DbSet<ContactMessage> ContactMessages { get; set; }
+        public DbSet<ContentPage> ContentPages { get; set; }
+        public DbSet<ContentSection> ContentSections { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -55,9 +58,17 @@ namespace Glutena.Data
     {
         public GlutenaDbContext CreateDbContext(string[] args)
         {
+            // Migration komutları (Add-Migration / Update-Database) bağlantıyı
+            // ayar dosyalarından okur, kodda sabit adres yazmaz.
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true)
+                .AddJsonFile("appsettings.Development.json", optional: true)
+                .AddEnvironmentVariables()
+                .Build();
+
             var optionsBuilder = new DbContextOptionsBuilder<GlutenaDbContext>();
-            optionsBuilder.UseSqlServer(
-                "Server=MK;Database=GlutenaDb;Trusted_Connection=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             return new GlutenaDbContext(optionsBuilder.Options);
         }
     }
