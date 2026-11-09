@@ -255,5 +255,38 @@ namespace Glutena.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Edit", new { id = section.ContentPageId });
         }
+
+        // ================= RESİM YÜKLEME =================
+
+        // Yazı kutusundaki "Resim ekle" butonu resmi buraya gönderir.
+        // Resim wwwroot/img/sayfalar klasörüne kaydedilir, adresi yazı kutusuna geri döner.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [RequestSizeLimit(5 * 1024 * 1024)]
+        public async Task<IActionResult> UploadImage(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest(new { error = "Dosya seçilmedi." });
+
+            if (file.Length > 5 * 1024 * 1024)
+                return BadRequest(new { error = "Resim en fazla 5 MB olabilir." });
+
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp", ".gif" };
+            var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            if (!allowedExtensions.Contains(extension))
+                return BadRequest(new { error = "Sadece JPG, PNG, WEBP ve GIF resimleri yüklenebilir." });
+
+            var folder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "sayfalar");
+            Directory.CreateDirectory(folder);
+
+            var fileName = Guid.NewGuid().ToString() + extension;
+            using (var stream = new FileStream(Path.Combine(folder, fileName), FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return Json(new { location = "/img/sayfalar/" + fileName });
+        }
+
     }
 }

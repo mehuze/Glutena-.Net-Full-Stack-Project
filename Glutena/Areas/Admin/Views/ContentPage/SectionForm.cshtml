@@ -42,6 +42,7 @@
                     <span asp-validation-for="Body" class="text-danger small"></span>
                     <div class="form-text">
                         İpucu: <strong>Biçimler</strong> menüsünden alt başlık, yeşil bilgi kutusu, sarı uyarı kutusu ve buton ekleyebilirsiniz.
+                        Resim eklemek için araç çubuğundaki <strong>resim</strong> butonunu kullanın (JPG, PNG, WEBP, GIF, en fazla 5 MB).
                     </div>
                 </div>
 
@@ -73,8 +74,8 @@
         branding: false,
         promotion: false,
         height: 520,
-        plugins: 'lists link',
-        toolbar: 'undo redo | styles | bold italic | bullist numlist | link | removeformat',
+        plugins: 'lists link image',
+        toolbar: 'undo redo | styles | bold italic | bullist numlist | link image | removeformat',
         style_formats: [
             { title: 'Paragraf', block: 'p' },
             { title: 'Alt başlık', block: 'h3' },
@@ -82,9 +83,42 @@
             { title: '🟨 Sarı uyarı kutusu', block: 'div', classes: 'cp-warn', wrapper: true },
             { title: '🔘 Buton (bir linki seçip uygulayın)', selector: 'a', classes: 'cp-btn' }
         ],
+
+        // ---- Resim ayarları ----
+        relative_urls: false,          // Resim adresi "/img/sayfalar/..." olarak kalsın
+        image_dimensions: false,       // Genişlik/yükseklik sorma, resim kutuya sığsın
+        image_description: true,       // "Açıklama" kutusu: görme engelliler için resmin ne gösterdiği
+        automatic_uploads: true,
+        images_file_types: 'jpg,jpeg,png,webp,gif',
+        images_upload_handler: async (blobInfo) => {
+            const formData = new FormData();
+            formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+            // Formdaki güvenlik anahtarı (Adım 1'deki ValidateAntiForgeryToken bunu kontrol ediyor)
+            const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+
+            let response;
+            try {
+                response = await fetch('/Admin/ContentPage/UploadImage', {
+                    method: 'POST',
+                    headers: { 'RequestVerificationToken': tokenInput ? tokenInput.value : '' },
+                    body: formData
+                });
+            } catch {
+                throw { message: 'Sunucuya ulaşılamadı. Site çalışıyor mu?', remove: true };
+            }
+
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok || !data.location) {
+                throw { message: data.error || 'Resim yüklenemedi.', remove: true };
+            }
+            return data.location;
+        },
+
         content_style: `
             body { font-family: sans-serif; font-size: 15px; line-height: 1.7; color: #444; }
             h3 { font-size: 17px; font-weight: 700; color: #2d6a4f; margin: 18px 0 8px; }
+            img { max-width: 100%; height: auto; border-radius: 10px; }
             .cp-note { background: #f3faf6; border-left: 4px solid #2d6a4f; border-radius: 10px; padding: 12px 16px; margin: 14px 0; color: #1b4332; }
             .cp-warn { background: #fff8e6; border-left: 4px solid #e0a100; border-radius: 10px; padding: 12px 16px; margin: 14px 0; color: #5c4300; }
             .cp-btn { display: inline-block; background: #1b4332; color: white; padding: 8px 18px; border-radius: 8px; text-decoration: none; font-weight: 600; }

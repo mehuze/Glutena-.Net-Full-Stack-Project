@@ -1,4 +1,5 @@
 ﻿@model Glutena.Models.Entities.ContentPage
+@using System.Text.RegularExpressions
 @{
     ViewData["Title"] = Model.Title;
     var sections = Model.Sections.ToList();
@@ -91,14 +92,16 @@
                 outline: none;
             }
 
+    .cp-card img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin: 18px auto;
+        border-radius: 12px;
+    }
+
     .cp-note {
         background: #f3faf6;
-        border-left: 4px solid #2d6a4f;
-        border-radius: 10px;
-        padding: 14px 18px;
-        margin: 16px 0;
-        color: #1b4332;
-    }
 
     .cp-warn {
         background: #fff8e6;
@@ -181,14 +184,28 @@
                 }
             </nav>
         }
-
         <!-- Bölümler -->
         @for (int i = 0; i < sections.Count; i++)
         {
             var s = sections[i];
             <section id="bolum-@s.Id" class="cp-card">
                 <h2><span class="cp-num">@(i + 1)</span>@s.Icon @s.Title</h2>
-                @Html.Raw(s.Body)
+                @{
+                    // [bagirsak-gorseli] işaretini bul. TinyMCE onu <p>...</p> içine almış olabilir.
+                    var gorselIsareti = Regex.Match(s.Body,
+                    @"<p(\s[^>]*)?>(\s|&nbsp;)*\[bagirsak-gorseli\](\s|&nbsp;)*</p>|\[bagirsak-gorseli\]",
+                    RegexOptions.IgnoreCase);
+                }
+                @if (gorselIsareti.Success)
+                {
+                    @Html.Raw(s.Body.Substring(0, gorselIsareti.Index))
+                    <partial name="_BagirsakGorseli" />
+                    @Html.Raw(s.Body.Substring(gorselIsareti.Index + gorselIsareti.Length))
+                }
+                else
+                {
+                    @Html.Raw(s.Body)
+                }
             </section>
         }
 
