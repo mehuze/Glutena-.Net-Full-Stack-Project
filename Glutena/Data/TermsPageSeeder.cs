@@ -146,7 +146,7 @@ namespace Glutena.Data
                 ShortTitle = "Hesap kapatma",
                 Body = """
                     <ul>
-                        <li>Hesabınızı istediğiniz zaman kapatabilirsiniz. Bunun için <a href="mailto:glutena.iletisim@gmail.com">glutena.iletisim@gmail.com</a> adresine yazmanız yeterlidir.</li>
+                        <li>Hesabınızı istediğiniz zaman kapatabilirsiniz. Bunun için <a href="mailto:glutena.tr@gmail.com">glutena.tr@gmail.com</a> adresine yazmanız yeterlidir.</li>
                         <li>Bu koşullara uymayan hesaplar uyarı yapılarak ya da doğrudan kapatılabilir.</li>
                     </ul>
                     """
@@ -160,7 +160,7 @@ namespace Glutena.Data
                 ShortTitle = "İletişim",
                 Body = """
                     <p>Glutena bu koşulları zaman zaman güncelleyebilir. Güncel koşullar her zaman bu sayfada yer alır.</p>
-                    <p>Sorularınız için <a href="mailto:glutena.iletisim@gmail.com">glutena.iletisim@gmail.com</a> adresine yazabilir ya da <a href="/Home/Contact">iletişim formunu</a> kullanabilirsiniz.</p>
+                    <p>Sorularınız için <a href="mailto:glutena.tr@gmail.com">glutena.tr@gmail.com</a> adresine yazabilir ya da <a href="/Home/Contact">iletişim formunu</a> kullanabilirsiniz.</p>
                     """
             });
 

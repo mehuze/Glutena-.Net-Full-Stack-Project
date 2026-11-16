@@ -42,7 +42,7 @@ namespace Glutena.Data
                 ShortTitle = "Veri sorumlusu",
                 Body = """
                     <p>Kişisel verileriniz, veri sorumlusu sıfatıyla <strong>[Ad Soyad]</strong> tarafından işlenmektedir.</p>
-                    <p>İletişim: <a href="mailto:glutena.iletisim@gmail.com">glutena.iletisim@gmail.com</a></p>
+                    <p>İletişim: <a href="mailto:glutena.tr@gmail.com">glutena.tr@gmail.com</a></p>
                     """
             });
 
@@ -139,7 +139,7 @@ namespace Glutena.Data
                         <li>Otomatik sistemlerle analiz edilmesi sonucu aleyhinize bir sonuç çıkmasına itiraz etme</li>
                         <li>Kanuna aykırı işlenmesi sebebiyle zarara uğramanız halinde zararın giderilmesini talep etme</li>
                     </ul>
-                    <div class="cp-note">Bu haklarınızı kullanmak için <a href="mailto:glutena.iletisim@gmail.com">glutena.iletisim@gmail.com</a> adresine yazabilirsiniz. Başvurunuz en geç 30 gün içinde ücretsiz olarak yanıtlanır.</div>
+                    <div class="cp-note">Bu haklarınızı kullanmak için <a href="mailto:glutena.tr@gmail.com">glutena.tr@gmail.com</a> adresine yazabilirsiniz. Başvurunuz en geç 30 gün içinde ücretsiz olarak yanıtlanır.</div>
                     """
             });
 
@@ -236,7 +236,7 @@ namespace Glutena.Data
                 Title = "Bize ulaşın",
                 ShortTitle = "İletişim",
                 Body = """
-                    <p>Gizlilik ile ilgili sorularınız için <a href="mailto:glutena.iletisim@gmail.com">glutena.iletisim@gmail.com</a> adresine yazabilir ya da <a href="/Home/Contact">iletişim formunu</a> kullanabilirsiniz.</p>
+                    <p>Gizlilik ile ilgili sorularınız için <a href="mailto:glutena.tr@gmail.com">glutena.tr@gmail.com</a> adresine yazabilir ya da <a href="/Home/Contact">iletişim formunu</a> kullanabilirsiniz.</p>
                     """
             });
 
