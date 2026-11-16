@@ -2,6 +2,7 @@
 <div class="container mt-4">
     <h2>Ürün Güncelle</h2>
     <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
         <input type="hidden" asp-for="Id" />
         <div class="mb-3">
             <label>Ürün Adı</label>

@@ -1,5 +1,24 @@
 ﻿@using Glutena.Models.Entities
 @model IEnumerable<Product>
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    // appsettings.json'daki ShowPrices ayarı: false ise fiyatlar gizlenir
+    bool showPrices = Configuration.GetValue<bool>("ShowPrices");
+
+    // Kategoriler (sadece aktif olanlar, ProductController'dan geliyor)
+    var categories = (ViewBag.Categories as List<Category>) ?? new List<Category>();
+
+    // Her kategorinin ana kategorisi. Alt kategorideki bir ürün, ana kategori seçilince de görünsün diye.
+    var parentOf = categories.ToDictionary(c => c.Id, c => c.ParentId);
+
+    // Ana kategoriler: üstünde başka kategori olmayanlar
+    var topCategories = categories
+        .Where(c => c.ParentId == null || !parentOf.ContainsKey(c.ParentId.Value))
+        .ToList();
+
+    // Anasayfadaki kategori kartından gelindiyse o kategori seçili açılsın
+    int? selectedCategoryId = ViewBag.CategoryId;
+}
 
 <!-- Header -->
 <div style="background: linear-gradient(135deg, #1b4332, #40916c); padding: 60px 0; text-align:center;">
@@ -16,11 +35,27 @@
         <div class="row g-3 align-items-end">
 
             <!-- Arama -->
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <label style="font-weight:600; color:#444; margin-bottom:6px;">Ürün Ara</label>
                 <input type="text" id="searchInput" class="form-control"
                        placeholder="Ürün adı yazın..."
                        value="@ViewBag.Search" />
+            </div>
+
+            <!-- Kategori -->
+            <div class="col-md-4">
+                <label style="font-weight:600; color:#444; margin-bottom:6px;">Kategori</label>
+                <select id="categoryFilter" class="form-control">
+                    <option value="">Tüm Kategoriler</option>
+                    @foreach (var parent in topCategories)
+                    {
+                        <option value="@parent.Id" selected="@(parent.Id == selectedCategoryId)">@parent.CategoryName</option>
+                        @foreach (var child in categories.Where(c => c.ParentId == parent.Id))
+                        {
+                            <option value="@child.Id" selected="@(child.Id == selectedCategoryId)">&nbsp;&nbsp;&nbsp;↳ @child.CategoryName</option>
+                        }
+                    }
+                </select>
             </div>
 
             <!-- Marka -->
@@ -35,8 +70,8 @@
                 </select>
             </div>
 
-            <!-- Sıralama -->
-            <div class="col-md-3">
+            <!-- Sıralama (fiyatlar gizliyken görünmez) -->
+            <div class="col-md-3 @(showPrices ? "" : "d-none")">
                 <label style="font-weight:600; color:#444; margin-bottom:6px;">Sırala</label>
                 <select id="sortFilter" class="form-control">
                     <option value="">Varsayılan</option>
@@ -52,10 +87,23 @@
     <div class="row g-4" id="productList">
         @foreach (var item in Model)
         {
+            // Bu ürünün kategorileri ve onların ana kategorileri. Örnek: ",7,3," (7: Ekmek, 3: Unlu Mamuller)
+            var cardCategoryIds = new List<int>();
+            foreach (var pc in item.ProductCategories ?? new List<ProductCategory>())
+            {
+                int? id = pc.CategoryId;
+                while (id.HasValue && !cardCategoryIds.Contains(id.Value))
+                {
+                    cardCategoryIds.Add(id.Value);
+                    id = parentOf.TryGetValue(id.Value, out var parentId) ? parentId : null;
+                }
+            }
+
             <div class="col-lg-3 col-md-6 product-card"
                  data-name="@item.ProductName.ToLower()"
                  data-brand="@item.Brand?.Name"
-                 data-price="@item.Price">
+                 data-categories=",@(string.Join(",", cardCategoryIds)),"
+                 data-price="@(showPrices? item.Price: null)">
 
                 <div style="background:white; border-radius:14px; padding:24px; text-align:center; border:1px solid #eee; height:100%; transition:transform 0.2s;" class="product-item">
 
@@ -74,7 +122,7 @@
                     <h5 style="font-size:15px; font-weight:600; color:#222; margin-bottom:6px;">@item.ProductName</h5>
                     <p style="color:#888; font-size:13px; margin-bottom:8px;">@item.Brand?.Name</p>
 
-                    @if (item.Price != null)
+                    @if (showPrices && item.Price != null)
                     {
                         <div style="color:#2d6a4f; font-weight:700; font-size:16px; margin-bottom:12px;">@item.Price ₺</div>
                     }
@@ -98,6 +146,7 @@
 <!-- JavaScript: Anlık Arama ve Filtreleme -->
 <script>
     const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
     const brandFilter = document.getElementById('brandFilter');
     const sortFilter = document.getElementById('sortFilter');
     const productList = document.getElementById('productList');
@@ -105,22 +154,24 @@
 
     function filterProducts() {
         const search = searchInput.value.toLowerCase();
+        const category = categoryFilter.value;
         const brand = brandFilter.value;
         const sort = sortFilter.value;
 
         // Tüm kartları al
         let cards = Array.from(document.querySelectorAll('.product-card'));
 
-        // Filtrele
+        // Filtrele: arama + kategori + marka, üçü birlikte
         let visible = cards.filter(card => {
             const name = card.dataset.name;
             const cardBrand = card.dataset.brand;
+            const cardBrandLower = cardBrand ? cardBrand.toLowerCase() : '';
 
-                const cardBrandLower = cardBrand ? cardBrand.toLowerCase() : '';
-    const matchSearch = name.includes(search) || cardBrandLower.includes(search);
+            const matchSearch = name.includes(search) || cardBrandLower.includes(search);
+            const matchCategory = category === '' || card.dataset.categories.includes(',' + category + ',');
             const matchBrand = brand === '' || cardBrand === brand;
 
-            if (matchSearch && matchBrand) {
+            if (matchSearch && matchCategory && matchBrand) {
                 card.style.display = 'block';
                 return true;
             } else {
@@ -129,7 +180,7 @@
             }
         });
 
-        // Sırala
+        // Sırala (sadece fiyatlar görünürken kullanılır)
         if (sort === 'asc') {
             visible.sort((a, b) => parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
         } else if (sort === 'desc') {
@@ -144,11 +195,13 @@
     }
 
     searchInput.addEventListener('input', filterProducts);
+    categoryFilter.addEventListener('change', filterProducts);
     brandFilter.addEventListener('change', filterProducts);
     sortFilter.addEventListener('change', filterProducts);
-    // Sayfa açılınca otomatik filtrele
-       window.addEventListener('load', function() {
-        if (document.getElementById('searchInput').value.trim() !== '') {
+
+    // Sayfa açılınca: arama yazılıysa ya da anasayfadan bir kategoriyle gelindiyse hemen filtrele
+    window.addEventListener('load', function () {
+        if (searchInput.value.trim() !== '' || categoryFilter.value !== '') {
             filterProducts();
         }
     });

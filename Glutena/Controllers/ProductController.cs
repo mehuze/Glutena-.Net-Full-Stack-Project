@@ -40,9 +40,8 @@ namespace Glutena.Controllers
             if (brandId.HasValue)
                 products = products.Where(p => p.BrandId == brandId);
 
-            // Kategori filtresi
-            if (categoryId.HasValue)
-                products = products.Where(p => p.ProductCategories.Any(pc => pc.CategoryId == categoryId));
+            // Kategori filtresi artık sayfada (JavaScript ile) yapılıyor.
+            // Böylece müşteri sayfa yenilenmeden kategori değiştirebilir ve alt kategoriler de dahil edilir.
 
             // Sıralama
             products = sort switch
@@ -53,6 +52,10 @@ namespace Glutena.Controllers
             };
 
             ViewBag.Brands = await _context.Brands.ToListAsync();
+            ViewBag.Categories = await _context.Categories
+    .Where(c => c.Active)
+    .OrderBy(c => c.CategoryName)
+    .ToListAsync();
             ViewBag.Search = search;
             ViewBag.BrandId = brandId;
             ViewBag.Sort = sort;

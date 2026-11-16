@@ -1,5 +1,9 @@
-﻿@{
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
     ViewData["Title"] = "Ana Sayfa";
+
+    // appsettings.json'daki ShowPrices ayarı: false ise fiyatlar gizlenir
+    bool showPrices = Configuration.GetValue<bool>("ShowPrices");
 }
 
 <!-- Hero Start -->
@@ -355,7 +359,7 @@
                         {
                             id: @item.Id,
                             name: "@item.ProductName",
-                            price: "@item.Price",
+                           price: "@(showPrices? item.Price: null)",
                             photo: "@item.PhotoPath"
                         },
                         </text>
@@ -377,7 +381,7 @@
                     <img src="${p.photo}" style="width:40px; height:40px; object-fit:contain;" onerror="this.style.display='none'" />
                     <div>
                         <div style="font-weight:600; font-size:14px;">${p.name}</div>
-                        <div style="color:#2d6a4f; font-size:13px;">${p.price} ₺</div>
+                                               ${p.price ? `<div style="color:#2d6a4f; font-size:13px;">${p.price} ₺</div>` : ''}
                     </div>
                 </a>
             `).join('');
@@ -406,7 +410,7 @@
                              alt="@item.ProductName"
                              style="height:160px; object-fit:contain; margin-bottom:14px;">
                         <h5 style="font-size:15px; font-weight:600; color:#222; margin-bottom:6px;">@item.ProductName</h5>
-                        @if (item.Price != null)
+                        @if (showPrices && item.Price != null)
                         {
                             <div style="color:#2d6a4f; font-weight:700; font-size:16px; margin-bottom:12px;">@item.Price ₺</div>
                         }

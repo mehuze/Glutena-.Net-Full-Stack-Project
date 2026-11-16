@@ -1,4 +1,5 @@
 ﻿@model Glutena.Models.Entities.Product
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
     ViewData["Title"] = Model.ProductName;
 }
@@ -75,7 +76,7 @@
                         <span style="color:#888; width:120px;">Gluten Durumu</span>
                         <span style="font-weight:600; color:#2d6a4f;">@Model.GlutenStatus</span>
                     </div>
-                    @if (Model.Price.HasValue)
+                    @if (Configuration.GetValue<bool>("ShowPrices") && Model.Price.HasValue)
                     {
                         <div style="display:flex; gap:12px;">
                             <span style="color:#888; width:120px;">Fiyat</span>

@@ -5,6 +5,7 @@
     <h2>Yeni Ürün Ekle</h2>
 
     <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
         <div class="mb-3">
             <label>Ürün Adı</label>
